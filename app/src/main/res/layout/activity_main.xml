@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+    <TextView
+            android:id="@+id/TVMainTitle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="TITLE"
+
+            android:textSize="40sp" />
+
+    <LinearLayout
+            android:id="@+id/LLOptSearchMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:orientation="vertical">
+
+        <EditText
+                android:id="@+id/ETKeywords"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Input Keyword Here" />
+
+        <Button
+                android:id="@+id/BtnOptSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="設定搜尋條件"
+                android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/LLHistoryMain"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+        <LinearLayout
+                android:id="@+id/LLHistoryInfoAndPlay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#C5C5C5"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:id="@+id/TVHistoryDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="5"
+                    android:text="西元 YYYY 年 MM 月 DD 日"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="22sp" />
+
+            <Button
+                    android:id="@+id/BtnPlayHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="5dp"
+                    android:text="台語介紹"
+                    android:textSize="22sp" />
+
+        </LinearLayout>
+
+        <TextView
+                android:id="@+id/TVHistoryContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="#D1D1D1"
+                android:text="History Today Content\n(Touch To Change)"
+                android:textAlignment="center"
+                android:textSize="25sp" />
+
+    </LinearLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
