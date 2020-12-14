@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/rounded_background"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp">
+
+    <TextView
+            android:id="@+id/TVNewsItemTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="This is Sample Title"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+    <TextView
+            android:id="@+id/TVNewsItemIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="This is Sample Content"
+            android:textSize="18sp" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class OptionActivity extends AppCompatActivity {
 
@@ -26,6 +27,7 @@ public class OptionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option);
+
 
         // ! find all components
         Button btnBackToMain = findViewById(R.id.BtnBackToMain);
@@ -35,31 +37,37 @@ public class OptionActivity extends AppCompatActivity {
 
         // ! button clicked event
         MyDatePickerListener.MainActivity = this;
-        btnSearch.setOnClickListener(new OptSearchButtonsMap());
-        btnBackToMain.setOnClickListener(new OptSearchButtonsMap());
-        btnSetRangeStart.setOnClickListener(new OptSearchButtonsMap());
-        btnSetRangeEnd.setOnClickListener(new OptSearchButtonsMap());
+        btnSearch.setOnClickListener(new OptSearchButtonsMap(this));
+        btnBackToMain.setOnClickListener(new OptSearchButtonsMap(this));
+        btnSetRangeStart.setOnClickListener(new OptSearchButtonsMap(this));
+        btnSetRangeEnd.setOnClickListener(new OptSearchButtonsMap(this));
     }
 }
 
 class OptSearchButtonsMap implements View.OnClickListener {
 
     public static Calendar start = null, end = null;
+    @SuppressLint("StaticFieldLeak")
+    private final Activity optActivity;
+
+    public OptSearchButtonsMap(Activity opt) {
+        this.optActivity = opt;
+    }
 
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.BtnSearch:
-                Intent optSearch = new Intent(v.getContext(), ResultActivity.class);
-
-                v.getContext().startActivity(optSearch);
+                // TODO
+                Intent optSearch = new Intent(this.optActivity, ResultActivity.class);
+                this.optActivity.startActivity(optSearch);
                 break;
 
             case R.id.BtnBackToMain:
                 start = null;
                 end = null;
-                ((Activity) v.getContext()).finish();
+                optActivity.finish();
                 break;
 
             case R.id.BtnSetDateStart:
