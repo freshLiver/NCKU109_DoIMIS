@@ -137,11 +137,11 @@ class MyDatePickerListener implements DatePickerDialog.OnDateSetListener {
             if (this.ClickedBtnID == R.id.BtnSetDateStart) {
                 OptSearchButtonsMap.start = Calendar.getInstance();
                 OptSearchButtonsMap.start.set(year, month, day);
-                TVStart.setText(String.format("%04d-%2d-%2d", year, month + 1, day));
+                TVStart.setText(String.format("%4d-%02d-%02d", year, month + 1, day));
             } else {
                 OptSearchButtonsMap.end = Calendar.getInstance();
                 OptSearchButtonsMap.end.set(year, month, day);
-                TVEnd.setText(String.format("%04d-%2d-%2d", year, month + 1, day));
+                TVEnd.setText(String.format("%4d-%02d-%02d", year, month + 1, day));
             }
 
         } catch (Exception e) {

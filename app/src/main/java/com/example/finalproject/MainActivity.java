@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         // get new history
         if (historyEvents != null) {
-            String dateInfo = String.format("西元 %4s 年 %2d 月 %2d 日"
+            String dateInfo = String.format("西元 %04s 年 %02d 月 %02d 日"
                     , historyEvents.get(iHistory)[0]
                     , today.get(Calendar.MONTH)
                     , today.get(Calendar.DAY_OF_MONTH));
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             TVHistoryDate.setText(dateInfo);
             TVHistoryContent.setText(historyEvents.get(iHistory)[1]);
         } else {
-            String dateInfo = String.format("西元 YYYY 年 %2d 月 %2d 日"
+            String dateInfo = String.format("西元 YYYY 年 %02d 月 %02d 日"
                     , today.get(Calendar.MONTH)
                     , today.get(Calendar.DAY_OF_MONTH));
 
