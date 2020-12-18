@@ -8,7 +8,7 @@
         tools:context=".OptionActivity">
 
     <LinearLayout
-            android:id="@+id/LLMediaCheckBoxes"
+            android:id="@+id/LLNewsMedia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -27,7 +27,8 @@
                 android:id="@+id/LLSearchSettingMediaR1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:tag="MEDIA_PARENT">
 
             <CheckBox
                     android:id="@+id/CBMedia_TVBS"
@@ -35,6 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
+                    android:tag="MEDIA"
                     android:text="TVBS"
                     android:textAlignment="center"
                     android:textSize="25sp" />
@@ -45,6 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
+                    android:tag="MEDIA"
                     android:text="新頭殼"
                     android:textAlignment="center"
                     android:textSize="25sp" />
@@ -54,13 +57,15 @@
                 android:id="@+id/LLSearchSettingMediaR2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:tag="MEDIA_PARENT">
 
             <CheckBox
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
+                    android:tag="MEDIA"
                     android:text="中時電子報"
                     android:textAlignment="center"
                     android:textSize="25sp" />
@@ -70,6 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
+                    android:tag="MEDIA"
                     android:text="蘋果日報"
                     android:textAlignment="center"
                     android:textSize="25sp" />
@@ -79,13 +85,15 @@
                 android:id="@+id/LLSearchSettingMediaR3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:tag="MEDIA_PARENT">
 
             <CheckBox
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
+                    android:tag="MEDIA"
                     android:text="三立新聞網"
                     android:textAlignment="center"
                     android:textSize="25sp" />
@@ -95,6 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
+                    android:tag="MEDIA"
                     android:text="自由時報"
                     android:textAlignment="center"
                     android:textSize="25sp" />
@@ -125,42 +134,52 @@
                 android:weightSum="5">
 
             <CheckBox
+                    android:id="@+id/CBType_International"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
+                    android:tag="TYPES"
                     android:text="國際"
                     android:textSize="20sp" />
 
             <CheckBox
+                    android:id="@+id/CBType_Social"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
+                    android:tag="TYPES"
                     android:text="社會"
                     android:textSize="20sp" />
 
             <CheckBox
+                    android:id="@+id/CBType_Politics"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
+                    android:tag="TYPES"
                     android:text="政治"
                     android:textSize="20sp" />
 
             <CheckBox
+                    android:id="@+id/CBType_Finance"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
+                    android:tag="TYPES"
                     android:text="財經"
                     android:textSize="20sp" />
 
             <CheckBox
+                    android:id="@+id/CBType_Sports"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
+                    android:tag="TYPES"
                     android:text="體育"
                     android:textSize="20sp" />
 
@@ -205,7 +224,8 @@
                     android:layout_weight="1"
                     android:text="YYYY-MM-DD"
                     android:textAlignment="center"
-                    android:textSize="25sp" />
+                    android:textSize="25sp"
+                    android:typeface="monospace" />
 
 
             <Button
@@ -239,7 +259,8 @@
                     android:layout_weight="1"
                     android:text="YYYY-MM-DD"
                     android:textAlignment="center"
-                    android:textSize="25sp" />
+                    android:textSize="25sp"
+                    android:typeface="monospace" />
 
 
             <Button
@@ -258,9 +279,9 @@
             android:id="@+id/LLSearchAndBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:layout_margin="5dp"
             android:orientation="vertical">
 
         <Button
