@@ -61,7 +61,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="5"
-                    android:text="西元 YYYY 年 MM 月 DD 日"
+                    android:text="西元 YYYY / MM / DD "
+                    android:typeface="monospace"
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="22sp" />
