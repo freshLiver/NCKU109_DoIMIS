@@ -1,22 +1,24 @@
-package idv.hhh.parser;
+package com.example.finalproject;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class google_new {
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
+public class google_new implements Runnable {
+
+	public ArrayList<String[]> searchResult;
 
 	//public static void main(String[] args) throws IOException, InterruptedException{
-	public  ArrayList<String[]> google_result(){
+	public ArrayList<String[]> google_result(){
 		ArrayList<String> URL_List = new ArrayList<String>();
 		ArrayList<String> title_List = new ArrayList<String>();
 		ArrayList<String> text_List = new ArrayList<String>();
-		ArrayList<String[]> google_search = new ArrayList<String[]>();
+		this.searchResult = new ArrayList<String[]>();
 		
 		Document doc_cna = null;
 		try {
@@ -68,8 +70,14 @@ public class google_new {
 			arr[0] = title_List.get(i);
 			arr[1] = text_List.get(i);
 			arr[2] = URL_List.get(i);
-			google_search.add(arr);
+			this.searchResult.add(arr);
 		}
-		return google_search;
+		return this.searchResult;
+	}
+
+	@Override
+	public void run() {
+		google_new crawler = new google_new();
+		this.searchResult = crawler.google_result();
 	}
 }
