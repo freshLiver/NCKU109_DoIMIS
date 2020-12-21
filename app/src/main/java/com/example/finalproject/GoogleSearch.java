@@ -60,7 +60,7 @@ public class GoogleSearch implements Runnable {
                 // TODO insert results into RecyclerView
                 for (String[] result : searchResults) {
                     // TODO, should also insert media name
-                    mainActivity.insertNewsItem(result[0], result[1], result[2]);
+                    mainActivity.insertNewsItem(result);
                 }
             }
     }
