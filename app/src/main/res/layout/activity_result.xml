@@ -4,6 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#A6A9BC"
         android:orientation="vertical"
         tools:context=".ResultActivity">
 
@@ -11,8 +12,7 @@
             android:id="@+id/RVSearchResults"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="8"
-            android:background="#DFDFDF">
+            android:layout_weight="11">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -24,6 +24,7 @@
             android:layout_weight="1">
 
         <Button
+                android:id="@+id/BtnResultBackToOpt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
