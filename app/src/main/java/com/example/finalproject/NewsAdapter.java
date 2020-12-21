@@ -15,7 +15,7 @@ import java.util.List;
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
     Context context;
-    ArrayList<String> titles, intros, links;
+    ArrayList<String> titles, intros, media, links;
 
 
     public NewsAdapter(Context context, ArrayList<String[]> searchResults) {
@@ -26,20 +26,50 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         this.titles = new ArrayList<>();
         this.intros = new ArrayList<>();
         this.links = new ArrayList<>();
+        this.media = new ArrayList<>();
 
         // split result infos into title, intro, link
         for (String[] item : searchResults) {
             this.titles.add(item[0]);
             this.intros.add(item[1]);
             this.links.add(item[2]);
+            this.media.add(item[3]);
         }
+    }
+
+
+    public void insertNewsItem(String[] item) {
+        String title = item[0];
+        String intro = item[1];
+        String link = item[2];
+        String media = item[3];
+
+        // add to data list
+        this.titles.add(title);
+        this.intros.add(intro);
+        this.links.add(link);
+        this.media.add(media);
+
+        // insert to here
+        this.notifyItemInserted(this.titles.size() - 1);
     }
 
     @NonNull
     @Override
     public NewsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        // a inflater to use target view as item view
         LayoutInflater inflater = LayoutInflater.from(context);
+
+        // create a new view for this item
         View newsItemView = inflater.inflate(R.layout.news_item_layout, parent, false);
+
+        // set onclick listener to this view
+        newsItemView.setOnClickListener(v -> {
+            // TODO convert to another activity and show content and news infos
+
+        });
+
         return new NewsHolder(newsItemView);
     }
 
@@ -47,26 +77,32 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     public void onBindViewHolder(@NonNull NewsHolder holder, int position) {
         String title = this.titles.get(position);
         String intro = this.intros.get(position);
+        String media = this.media.get(position);
 
         holder.TVTitle.setText(title);
         holder.TVIntro.setText(intro);
+        holder.TVMedia.setText(media);
     }
+
 
     @Override
     public int getItemCount() {
         return this.titles.size();
     }
 
-
-    public class NewsHolder extends RecyclerView.ViewHolder {
+    /**
+     * the inner class for building item view
+     */
+    class NewsHolder extends RecyclerView.ViewHolder {
 
         // holder data
-        TextView TVTitle, TVIntro;
+        TextView TVTitle, TVIntro, TVMedia;
 
         public NewsHolder(@NonNull View itemView) {
             super(itemView);
             TVTitle = itemView.findViewById(R.id.TVNewsItemTitle);
             TVIntro = itemView.findViewById(R.id.TVNewsItemIntro);
+            TVMedia = itemView.findViewById(R.id.TVNewsItemMedia);
         }
     }
 }
