@@ -49,6 +49,9 @@ public class GoogleSearch implements Runnable {
         int numTypes = this.targetTypes.size();
         int numMedia = this.targetMedia.size();
 
+        // THIS IS FOR TESTING
+        resActivity.insertNewsItem(new String[]{"TITLE", "CONTENT", "link", "CNA"});
+
         // 根據 type 以及 media 決定 google 搜尋的關鍵字然後進行搜尋、更新結果
         for (int iType = 0; iType < numTypes; ++iType)
             for (int iMedia = 0; iMedia < numMedia; ++iMedia) {
