@@ -1,9 +1,14 @@
 package com.example.finalproject;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.text.Layout;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -59,7 +64,17 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         // set onclick listener to this view
         newsItemView.setOnClickListener(v -> {
             // TODO convert to another activity and show content and news infos
+            NewsContentDialog contentDialog = new NewsContentDialog(v.getContext());
 
+            /// set this dialog at runtime
+            Window window = contentDialog.getWindow();
+
+            // set width
+            int width = (int) (v.getContext().getResources().getDisplayMetrics().widthPixels * 0.90);
+            int height = (int) (v.getContext().getResources().getDisplayMetrics().heightPixels * 0.70);
+            contentDialog.show();
+            window.setLayout(width, height);
+            window.setBackgroundDrawableResource(android.R.color.transparent);
         });
 
         return new NewsHolder(newsItemView);
