@@ -3,7 +3,6 @@ package com.example.finalproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,12 +20,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+
 public class OptionActivity extends AppCompatActivity {
 
+    /***********************************************************************
+     * DATA AND CONSTANTS
+     ***********************************************************************/
     private String keywords;
     private ArrayList<String> checkedMedia, checkedTypes;
     public TextView TVStart, TVEnd;
 
+    /***********************************************************************
+     * Constructors/onCreate & get bundle & component settings
+     ***********************************************************************/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,9 +42,19 @@ public class OptionActivity extends AppCompatActivity {
         this.checkedMedia = new ArrayList<>();
         this.checkedTypes = new ArrayList<>();
 
+
+        // get bundles and set components
+        getBundles();
+        setComponents();
+    }
+
+    protected void getBundles() {
         // get keywords from bundle
         Bundle bundle = this.getIntent().getExtras();
         this.keywords = bundle.getString(String.valueOf(R.string.bundle_kws_main2opt));
+    }
+
+    protected void setComponents() {
 
         // ! find all components
         Button btnBackToMain = findViewById(R.id.BtnBackToMain);
@@ -48,9 +64,6 @@ public class OptionActivity extends AppCompatActivity {
         TVStart = findViewById(R.id.TVOptDateStart);
         TVEnd = findViewById(R.id.TVOptDateEnd);
 
-        // set default date
-        MyDatePickerListener.MainActivity = this;
-
         // ! button clicked event
         btnSearch.setOnClickListener(new OptSearchButtonsMap(this));
         btnBackToMain.setOnClickListener(new OptSearchButtonsMap(this));
@@ -58,9 +71,10 @@ public class OptionActivity extends AppCompatActivity {
         btnSetRangeEnd.setOnClickListener(new OptSearchButtonsMap(this));
     }
 
+    /***********************************************************************
+     * CLASS METHODS
+     ***********************************************************************/
     public Pair<Boolean, String> checkLegalSearch() {
-        // result is a pair <illegal, msg> or <legal, "keywords & before & after">
-        Pair<Boolean, String> result;
 
         // get start and end date
         if (OptSearchButtonsMap.start == null || OptSearchButtonsMap.end == null)
@@ -104,8 +118,15 @@ public class OptionActivity extends AppCompatActivity {
         return new Pair<>(true, query);
     }
 
+    /***********************************************************************
+     * GETTERS/SETTERS
+     ***********************************************************************/
     public Pair<ArrayList<String>, ArrayList<String>> getMediaAndTypes() {
         return new Pair<>(this.checkedMedia, this.checkedTypes);
+    }
+
+    public String getKeywords ( ) {
+        return this.keywords;
     }
 
     public ArrayList<View> getChildrenWithTag(View v, String tag) {
@@ -139,6 +160,7 @@ public class OptionActivity extends AppCompatActivity {
     }
 }
 
+
 class OptSearchButtonsMap implements View.OnClickListener {
 
     public static Calendar start = null, end = null;
@@ -165,13 +187,13 @@ class OptSearchButtonsMap implements View.OnClickListener {
                 else {
                     Intent optSearch = new Intent(this.optActivity, ResultActivity.class);
 
-                    // show query
-                    Toast.makeText(optActivity, res.second, Toast.LENGTH_SHORT).show();
                     // use bundle to send settings
                     Bundle bundle = new Bundle();
 
+                    String keywords = this.optActivity.getKeywords();
                     ArrayList<String> media = this.optActivity.getMediaAndTypes().first;
                     ArrayList<String> types = this.optActivity.getMediaAndTypes().second;
+                    bundle.putString("KEYWORDS", keywords);
                     bundle.putStringArrayList("MEDIA", media);
                     bundle.putStringArrayList("TYPES", types);
 
@@ -210,7 +232,7 @@ class OptSearchButtonsMap implements View.OnClickListener {
                 // set listener and default date
                 picker.setCancelable(true);
                 picker.updateDate(year, month, day);
-                picker.setOnDateSetListener(new MyDatePickerListener(v.getId()));
+                picker.setOnDateSetListener(new MyDatePickerListener(optActivity, v.getId()));
 
                 // show picker dialog
                 picker.show();
@@ -225,10 +247,11 @@ class OptSearchButtonsMap implements View.OnClickListener {
 class MyDatePickerListener implements DatePickerDialog.OnDateSetListener {
 
     @SuppressLint("StaticFieldLeak")
-    public static Activity MainActivity;
+    private final OptionActivity optActivity;
     private final int ClickedBtnID;
 
-    public MyDatePickerListener(int btnID) {
+    public MyDatePickerListener(OptionActivity opt, int btnID) {
+        this.optActivity = opt;
         this.ClickedBtnID = btnID;
     }
 
@@ -236,8 +259,8 @@ class MyDatePickerListener implements DatePickerDialog.OnDateSetListener {
     @SuppressLint("DefaultLocale")
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // get target tv
-        TextView TVStart = MainActivity.findViewById(R.id.TVOptDateStart);
-        TextView TVEnd = MainActivity.findViewById(R.id.TVOptDateEnd);
+        TextView TVStart = this.optActivity.findViewById(R.id.TVOptDateStart);
+        TextView TVEnd = this.optActivity.findViewById(R.id.TVOptDateEnd);
 
         // set target TV Text and start or end date
         if (this.ClickedBtnID == R.id.BtnSetDateStart) {
