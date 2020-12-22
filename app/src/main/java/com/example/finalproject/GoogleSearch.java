@@ -21,14 +21,19 @@ public class GoogleSearch implements Runnable {
      ***********************************************************************/
     protected static final String GoogleSearchBaseKeyword = "https://www.google.com/search?q=";
     protected ArrayList<String> targetTypes, targetMedia;
-    protected ResultActivity mainActivity;
+    protected ResultActivity resActivity;
+
+    protected String keywords;
 
     /***********************************************************************
      * Constructors
      ***********************************************************************/
-    public GoogleSearch(ArrayList<String> types, ArrayList<String> media, ResultActivity main) {
+    public GoogleSearch(ArrayList<String> types, ArrayList<String> media, String keywords, ResultActivity main) {
         // get parent
-        this.mainActivity = main;
+        this.resActivity = main;
+
+        // get keywords
+        this.keywords = keywords;
 
         // get these info and save to instance data for crawler
         this.targetTypes = types;
@@ -57,10 +62,9 @@ public class GoogleSearch implements Runnable {
                 // get search results
                 ArrayList<String[]> searchResults = getSearchResults(searchURL, media);
 
-                // TODO insert results into RecyclerView
-                for (String[] result : searchResults) {
-                    // TODO, should also insert media name
-                    mainActivity.insertNewsItem(result);
+                // insert results into RecyclerView
+                for (String[] info : searchResults) {
+                    resActivity.insertNewsItem(info);
                 }
             }
     }
@@ -71,7 +75,7 @@ public class GoogleSearch implements Runnable {
      ***********************************************************************/
 
     /**
-     * TODO, choose url by type and media name
+     * TODO, choose url by type and media name and keywords
      *
      * @param type  target type
      * @param media target media name
@@ -79,6 +83,8 @@ public class GoogleSearch implements Runnable {
      */
     protected String getSearchURLByTypeAndMedia(String type, String media) {
         String url = GoogleSearchBaseKeyword + SampleKeywords;
+
+        // TODO
 
         return url;
     }
