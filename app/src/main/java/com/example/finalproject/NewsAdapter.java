@@ -18,7 +18,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     ArrayList<String> titles, intros, media, links;
 
 
-    public NewsAdapter(Context context, ArrayList<String[]> searchResults) {
+    public NewsAdapter(Context context) {
         // get context for holder's OnCreate event
         this.context = context;
 
@@ -27,14 +27,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         this.intros = new ArrayList<>();
         this.links = new ArrayList<>();
         this.media = new ArrayList<>();
-
-        // split result infos into title, intro, link
-        for (String[] item : searchResults) {
-            this.titles.add(item[0]);
-            this.intros.add(item[1]);
-            this.links.add(item[2]);
-            this.media.add(item[3]);
-        }
     }
 
 

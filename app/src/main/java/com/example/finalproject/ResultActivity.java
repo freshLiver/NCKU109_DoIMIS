@@ -10,61 +10,81 @@ import android.view.View;
 import android.widget.Button;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class ResultActivity extends AppCompatActivity {
 
-    private ArrayList<String[]> searchResults;
-    private RecyclerView RVSearchResults;
+    /***********************************************************************
+     * DATA AND CONSTANTS
+     ***********************************************************************/
+    protected RecyclerView RVSearchResults;
 
+    protected String keywords;
+    protected ArrayList<String> types, media;
+
+
+    /***********************************************************************
+     * Constructors/onCreate & get bundle & component settings
+     ***********************************************************************/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
+        // get bundles and set components
+        getBundles();
+        setComponents();
 
+        // do google search with given keywords
+        Thread thSearch = new Thread(new GoogleSearch(types, media, keywords, this));
+        thSearch.start();
+
+    }
+
+    protected void getBundles() {
+        Bundle bundle = this.getIntent().getExtras();
+
+        this.keywords = bundle.getString("KEYWORDS");
+        this.types = bundle.getStringArrayList("TYPES");
+        this.media = bundle.getStringArrayList("MEDIA");
+    }
+
+    protected void setComponents() {
         // set button listener
         Button BtnResultBackToOpt = findViewById(R.id.BtnResultBackToOpt);
         BtnResultBackToOpt.setOnClickListener(new ResultButtonMapping(this));
-
-        // SAMPLE add some data for testing recycle view
-        this.searchResults = new ArrayList<>();
-
-        this.searchResults.add(new String[]{
-                "植物肉浪潮／植物肉釣出愛嘗鮮族群超商餐飲業搶食600億商機 ...",
-                "歐美掀起綠色飲食風潮，台灣餐飲、零售業者看好商機，陸續推出植物肉食品，",
-                "link",
-                "中央社 CNA"
-        });
-
-//        Thread result = new Thread(new GoogleSearch());
-//        result.start();
 
         // get my recycle view
         RVSearchResults = findViewById(R.id.RVSearchResults);
 
         // instantiate my adapter and set it for recycle view
-        NewsAdapter newsAdapter = new NewsAdapter(this, this.searchResults);
+        NewsAdapter newsAdapter = new NewsAdapter(this);
         RVSearchResults.setAdapter(newsAdapter);
         RVSearchResults.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public void setSearchResults(ArrayList<String[]> results) {
-        for (String[] result : results) {
-            this.insertNewsItem(result);
-        }
-    }
-
-    public int getResultsSize() {
-        return this.searchResults.size();
-    }
+    /***********************************************************************
+     * CLASS METHODS
+     ***********************************************************************/
 
     public void insertNewsItem(String[] newsItem) {
-
+        // get adapter from RecyclerView
         NewsAdapter adp = (NewsAdapter) this.RVSearchResults.getAdapter();
         if (adp != null) {
-            adp.insertNewsItem(newsItem);
+            // only main thread can update ui
+            runOnUiThread(() -> adp.insertNewsItem(newsItem));
         }
+
+        // TODO should also insert to this.results
     }
+
+
+    /***********************************************************************
+     * GETTERS/SETTERS
+     ***********************************************************************/
+
 
 }
 
