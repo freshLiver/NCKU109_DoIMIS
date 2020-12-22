@@ -1,28 +1,67 @@
 package com.example.finalproject;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.text.Layout;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
-    Context context;
-    ArrayList<String> titles, intros, media, links;
+    /***********************************************************************
+     * an interface for item click event
+     ***********************************************************************/
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
 
+    public void setOnItemClickListen(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
 
+    /***********************************************************************
+     * the inner class for building item view
+     ***********************************************************************/
+    protected static class NewsHolder extends RecyclerView.ViewHolder {
+
+        // holder data
+        TextView TVTitle, TVIntro, TVMedia;
+
+        public NewsHolder(@NonNull View newsItem, OnItemClickListener listener) {
+            super(newsItem);
+            // get components
+            TVTitle = newsItem.findViewById(R.id.TVNewsItemTitle);
+            TVIntro = newsItem.findViewById(R.id.TVNewsItemIntro);
+            TVMedia = newsItem.findViewById(R.id.TVNewsItemMedia);
+
+            // 設定 newsItem 的 click listener
+            newsItem.setOnClickListener(view -> {
+                // 從 adapter 傳來的 listener 必須為 not null 且此 newsItem 必須不為 NO_POSITION
+                int position = this.getAdapterPosition();
+                if (listener != null && position != RecyclerView.NO_POSITION) {
+                    // 如果 adapter 中有用 setOnItemClickListener 設定 adapter listener = listener 的話
+                    listener.onItemClick(view, position);
+                }
+            });
+        }
+    }
+
+    /***********************************************************************
+     * DATA AND CONSTANTS
+     ***********************************************************************/
+    protected OnItemClickListener onItemClickListener;
+
+    protected final Context context;
+    protected ArrayList<String> titles, intros, media, links;
+
+    /***********************************************************************
+     * Constructors/onCreate & get bundle & component settings
+     ***********************************************************************/
     public NewsAdapter(Context context) {
         // get context for holder's OnCreate event
         this.context = context;
@@ -32,9 +71,33 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         this.intros = new ArrayList<>();
         this.links = new ArrayList<>();
         this.media = new ArrayList<>();
+
+        // 在 item clicked 時就從 holder 將 position 傳給這邊執行 onItemClick
+        this.setOnItemClickListen(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                // get clicked item url
+                String link = links.get(position);
+
+                // get view width and height
+                int width = (int) (v.getContext().getResources().getDisplayMetrics().widthPixels * 0.90);
+                int height = (int) (v.getContext().getResources().getDisplayMetrics().heightPixels * 0.70);
+
+                // init a dialog for showing news contents
+                NewsContentDialog contentDialog = new NewsContentDialog(v.getContext(), link);
+
+                // set width and height of dialog at runtime
+                contentDialog.getWindow().setLayout(width, height);
+                contentDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                contentDialog.show();
+            }
+        });
     }
 
 
+    /***********************************************************************
+     * Class Methods
+     ***********************************************************************/
     public void insertNewsItem(String[] item) {
         String title = item[0];
         String intro = item[1];
@@ -59,25 +122,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // create a new view for this item
-        View newsItemView = inflater.inflate(R.layout.news_item_layout, parent, false);
+        View newsItem = inflater.inflate(R.layout.news_item_layout, parent, false);
 
-        // set onclick listener to this view
-        newsItemView.setOnClickListener(v -> {
-            // TODO convert to another activity and show content and news infos
-            NewsContentDialog contentDialog = new NewsContentDialog(v.getContext());
-
-            /// set this dialog at runtime
-            Window window = contentDialog.getWindow();
-
-            // set width
-            int width = (int) (v.getContext().getResources().getDisplayMetrics().widthPixels * 0.90);
-            int height = (int) (v.getContext().getResources().getDisplayMetrics().heightPixels * 0.70);
-            contentDialog.show();
-            window.setLayout(width, height);
-            window.setBackgroundDrawableResource(android.R.color.transparent);
-        });
-
-        return new NewsHolder(newsItemView);
+        return new NewsHolder(newsItem, this.onItemClickListener);
     }
 
     @Override
@@ -91,25 +138,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         holder.TVMedia.setText(media);
     }
 
-
+    /***********************************************************************
+     * Getters & Setters
+     ***********************************************************************/
     @Override
     public int getItemCount() {
         return this.titles.size();
-    }
-
-    /**
-     * the inner class for building item view
-     */
-    class NewsHolder extends RecyclerView.ViewHolder {
-
-        // holder data
-        TextView TVTitle, TVIntro, TVMedia;
-
-        public NewsHolder(@NonNull View itemView) {
-            super(itemView);
-            TVTitle = itemView.findViewById(R.id.TVNewsItemTitle);
-            TVIntro = itemView.findViewById(R.id.TVNewsItemIntro);
-            TVMedia = itemView.findViewById(R.id.TVNewsItemMedia);
-        }
     }
 }
