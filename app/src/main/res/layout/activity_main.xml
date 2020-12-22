@@ -32,12 +32,31 @@
                 android:layout_height="wrap_content"
                 android:hint="Input Keyword Here" />
 
-        <Button
-                android:id="@+id/BtnOptSearch"
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="設定搜尋條件"
-                android:textSize="20sp" />
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+            <Button
+                    android:id="@+id/BtnVoiceInput"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_weight="1"
+                    android:text="台語語音輸入"
+                    android:textSize="20sp" />
+
+            <Button
+                    android:id="@+id/BtnOptSearch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_weight="1"
+                    android:text="設定搜尋條件"
+                    android:textSize="20sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -62,10 +81,10 @@
                     android:layout_gravity="center"
                     android:layout_weight="5"
                     android:text="西元 YYYY / MM / DD "
-                    android:typeface="monospace"
                     android:textAlignment="center"
                     android:textColor="#000000"
-                    android:textSize="22sp" />
+                    android:textSize="22sp"
+                    android:typeface="monospace" />
 
             <Button
                     android:id="@+id/BtnPlayHistory"
