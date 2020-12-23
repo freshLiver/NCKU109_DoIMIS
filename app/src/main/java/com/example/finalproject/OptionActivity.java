@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -37,6 +38,7 @@ public class OptionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         // init arraylist to log checked boxes
         this.checkedMedia = new ArrayList<>();
@@ -125,7 +127,7 @@ public class OptionActivity extends AppCompatActivity {
         return new Pair<>(this.checkedMedia, this.checkedTypes);
     }
 
-    public String getKeywords ( ) {
+    public String getKeywords() {
         return this.keywords;
     }
 
