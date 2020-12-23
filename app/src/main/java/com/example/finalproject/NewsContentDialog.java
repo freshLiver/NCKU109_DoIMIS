@@ -5,9 +5,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -21,7 +24,7 @@ public class NewsContentDialog extends Dialog implements View.OnClickListener {
     protected Context context;
     protected String newsURL;
 
-    protected ArrayList<String> newsContents;
+    protected ArrayList<String> contentParagraphs;
     protected ArrayAdapter<String> arrayAdapter;
 
     protected TextView TVTitles, TVReporters, TVDatetime;
@@ -56,11 +59,30 @@ public class NewsContentDialog extends Dialog implements View.OnClickListener {
         this.TVTitles = this.findViewById(R.id.TVNewsContentTitle);
         this.TVDatetime = this.findViewById(R.id.TVNewsContentDateTime);
         this.TVReporters = this.findViewById(R.id.TVNewsContentReporters);
-
         this.LVContents = this.findViewById(R.id.LVNewsContentContents);
-        this.newsContents = new ArrayList<>();
-        this.arrayAdapter = new ArrayAdapter<>(this.getContext(), R.layout.news_content_paragraph, this.newsContents);
+
+        // set list view adapter and style
+        this.contentParagraphs = new ArrayList<>();
+        this.arrayAdapter = new ArrayAdapter<>(this.getContext(), R.layout.news_content_paragraph, this.contentParagraphs);
         this.LVContents.setAdapter(this.arrayAdapter);
+
+        // set list view item click event
+        this.LVContents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int pos, long l) {
+                // get corresponding paragraph with position
+                String paragraph = contentParagraphs.get(pos);
+
+                // TODO : speak this paragraph in taiwanese
+                Toast.makeText(v.getContext(), paragraph, Toast.LENGTH_SHORT).show();
+                Thread thPlay = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // TODO : convert to taiwanese and play this paragraph in taiwanese
+                    }
+                });
+            }
+        });
     }
 
 
@@ -104,8 +126,12 @@ public class NewsContentDialog extends Dialog implements View.OnClickListener {
 
                 // TODO : split content into paragraphs
                 // add content into newsContents and notify item changed
-                this.newsContents.add(info[3]);
+                this.contentParagraphs.add(info[3]);
 
+                this.contentParagraphs.add("這是2");
+                this.contentParagraphs.add("這是3");
+                this.contentParagraphs.add("這是4");
+                this.contentParagraphs.add("info[3]");
                 this.arrayAdapter.notifyDataSetChanged();
 
             }
