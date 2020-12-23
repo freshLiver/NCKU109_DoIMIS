@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -15,7 +16,7 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-public class ResultActivity extends AppCompatActivity {
+public class ResultActivity extends Activity {
 
     /***********************************************************************
      * DATA AND CONSTANTS
@@ -32,8 +33,9 @@ public class ResultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_result);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // must before setContentView
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.setContentView(R.layout.activity_result);
 
         // get bundles and set components
         getBundles();

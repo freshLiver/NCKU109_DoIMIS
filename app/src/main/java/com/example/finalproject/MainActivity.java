@@ -3,6 +3,7 @@ package com.example.finalproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     /***********************************************************************
      * DATA AND CONSTANTS
@@ -36,8 +37,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // must before setContentView
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.setContentView(R.layout.activity_main);
 
         // get components and set their events
         setComponents();

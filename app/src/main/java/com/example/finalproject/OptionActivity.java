@@ -3,6 +3,7 @@ package com.example.finalproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class OptionActivity extends AppCompatActivity {
+public class OptionActivity extends Activity {
 
     /***********************************************************************
      * DATA AND CONSTANTS
@@ -37,8 +38,9 @@ public class OptionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_option);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // must before setContentView
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.setContentView(R.layout.activity_option);
 
         // init arraylist to log checked boxes
         this.checkedMedia = new ArrayList<>();
