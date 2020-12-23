@@ -26,6 +26,7 @@ public class ResultActivity extends Activity {
     protected String keywords;
     protected ArrayList<String> types, media;
 
+    protected Button BtnResultBackToOpt;
 
     /***********************************************************************
      * Constructors/onCreate & get bundle & component settings
@@ -57,16 +58,20 @@ public class ResultActivity extends Activity {
 
     protected void setComponents() {
         // set button listener
+        this.BtnResultBackToOpt = this.findViewById(R.id.BtnResultBackToOpt);
         Button BtnResultBackToOpt = findViewById(R.id.BtnResultBackToOpt);
         BtnResultBackToOpt.setOnClickListener(new ResultButtonMapping(this));
 
+        // finish while back clicked
+        this.BtnResultBackToOpt.setOnClickListener(v -> finish());
+
         // get my recycle view
-        RVSearchResults = findViewById(R.id.RVSearchResults);
+        this.RVSearchResults = findViewById(R.id.RVSearchResults);
 
         // instantiate my adapter and set it for recycle view
         NewsAdapter newsAdapter = new NewsAdapter(this);
-        RVSearchResults.setAdapter(newsAdapter);
-        RVSearchResults.setLayoutManager(new LinearLayoutManager(this));
+        this.RVSearchResults.setAdapter(newsAdapter);
+        this.RVSearchResults.setLayoutManager(new LinearLayoutManager(this));
     }
 
     /***********************************************************************
