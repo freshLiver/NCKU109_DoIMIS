@@ -79,17 +79,17 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                 // get clicked item url
                 String link = links.get(position);
 
-                // get view width and height
-                int width = (int) (v.getContext().getResources().getDisplayMetrics().widthPixels * 0.90);
-                int height = (int) (v.getContext().getResources().getDisplayMetrics().heightPixels * 0.70);
-
                 // init a dialog for showing news contents
                 NewsContentDialog contentDialog = new NewsContentDialog(v.getContext(), link);
+                contentDialog.show();
 
-                // set width and height of dialog at runtime
+                // get view width and height
+                int width = (int) (v.getContext().getResources().getDisplayMetrics().widthPixels * 0.90);
+                int height = (int) (v.getContext().getResources().getDisplayMetrics().heightPixels * 0.80);
+
+                // set width and height of dialog at runtime (must set after dialog.show)
                 contentDialog.getWindow().setLayout(width, height);
                 contentDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                contentDialog.show();
             }
         });
     }
