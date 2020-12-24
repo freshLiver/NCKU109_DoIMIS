@@ -8,4 +8,15 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
+
+    <color name="main_background">#ffffffff</color>
+
+    <color name="options_section_tag_foreground">#272643</color>
+    <color name="options_section_tag_background">#e3e3e3</color>
+
+    <color name="result_background">#e6ffff</color>
+    <color name="result_border">#b3e5fc</color>
+
+    <color name="dialog_background">#e6ee9c</color>
+    <color name="dialog_border">#b3bc6d</color>
 </resources>
