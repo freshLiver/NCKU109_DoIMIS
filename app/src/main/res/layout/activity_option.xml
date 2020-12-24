@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,7 +22,7 @@
                 android:text="@string/option_media_tag"
                 android:textAlignment="center"
                 android:textColor="@color/options_section_tag_foreground"
-                android:textSize="25sp" />
+                android:textSize="@dimen/option_tag_text" />
 
         <LinearLayout
                 android:id="@+id/LLSearchSettingMediaR1"
@@ -36,21 +35,29 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_horizontal"
+                    android:background="@drawable/check_box_bg_selector"
+                    android:button="@null"
+                    android:gravity="center"
+
                     android:tag="MEDIA"
                     android:text="@string/media_name_r0c0"
                     android:textAlignment="center"
-                    android:textSize="25sp" />
+                    android:textColor="@drawable/check_box_fg_selector"
+                    android:textSize="@dimen/option_media_name" />
 
             <CheckBox
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_horizontal"
+                    android:background="@drawable/check_box_bg_selector"
+                    android:button="@null"
+                    android:gravity="center"
                     android:tag="MEDIA"
                     android:text="@string/media_name_r0c1"
                     android:textAlignment="center"
-                    android:textSize="25sp" />
+                    android:textColor="@drawable/check_box_fg_selector"
+                    android:textSize="@dimen/option_media_name" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -64,21 +71,28 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_horizontal"
+                    android:background="@drawable/check_box_bg_selector"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
                     android:tag="MEDIA"
                     android:text="@string/media_name_r1c0"
                     android:textAlignment="center"
-                    android:textSize="25sp" />
+                    android:textColor="@drawable/check_box_fg_selector"
+                    android:textSize="@dimen/option_media_name" />
 
             <CheckBox
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_horizontal"
+                    android:background="@drawable/check_box_bg_selector"
+                    android:button="@null"
+                    android:gravity="center"
                     android:tag="MEDIA"
                     android:text="@string/media_name_r1c1"
                     android:textAlignment="center"
-                    android:textSize="25sp" />
+                    android:textColor="@drawable/check_box_fg_selector"
+                    android:textSize="@dimen/option_media_name" />
         </LinearLayout>
 
         <LinearLayout
@@ -92,21 +106,27 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_horizontal"
+                    android:background="@drawable/check_box_bg_selector"
+                    android:button="@null"
+                    android:gravity="center"
                     android:tag="MEDIA"
                     android:text="@string/media_name_r2c0"
                     android:textAlignment="center"
-                    android:textSize="25sp" />
+                    android:textColor="@drawable/check_box_fg_selector"
+                    android:textSize="@dimen/option_media_name" />
 
             <CheckBox
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_horizontal"
+                    android:background="@drawable/check_box_bg_selector"
+                    android:button="@null"
+                    android:gravity="center"
                     android:tag="MEDIA"
                     android:text="@string/media_name_r2c1"
                     android:textAlignment="center"
-                    android:textSize="25sp" />
+                    android:textColor="@drawable/check_box_fg_selector"
+                    android:textSize="@dimen/option_media_name" />
         </LinearLayout>
     </LinearLayout>
 
@@ -125,7 +145,7 @@
                 android:text="@string/option_types_tag"
                 android:textAlignment="center"
                 android:textColor="@color/options_section_tag_foreground"
-                android:textSize="25sp" />
+                android:textSize="@dimen/option_tag_text" />
 
         <LinearLayout
                 android:id="@+id/LLNewsTypes"
@@ -135,49 +155,63 @@
                 android:weightSum="5">
 
             <CheckBox
-                    android:id="@+id/CBType_International"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/check_box_bg_selector"
+                    android:button="@null"
                     android:tag="TYPES"
                     android:text="@string/types_name_0"
-                    android:textSize="20sp" />
+                    android:textAlignment="center"
+                    android:textColor="@drawable/check_box_fg_selector"
+                    android:textSize="@dimen/option_media_type" />
 
             <CheckBox
-                    android:id="@+id/CBType_Social"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/check_box_bg_selector"
+                    android:button="@null"
                     android:tag="TYPES"
                     android:text="@string/types_name_1"
-                    android:textSize="20sp" />
+                    android:textAlignment="center"
+                    android:textColor="@drawable/check_box_fg_selector"
+                    android:textSize="@dimen/option_media_type" />
 
             <CheckBox
-                    android:id="@+id/CBType_Politics"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/check_box_bg_selector"
+                    android:button="@null"
                     android:tag="TYPES"
                     android:text="@string/types_name_2"
-                    android:textSize="20sp" />
+                    android:textAlignment="center"
+                    android:textColor="@drawable/check_box_fg_selector"
+                    android:textSize="@dimen/option_media_type" />
 
             <CheckBox
-                    android:id="@+id/CBType_Finance"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/check_box_bg_selector"
+                    android:button="@null"
                     android:tag="TYPES"
                     android:text="@string/types_name_3"
-                    android:textSize="20sp" />
-
+                    android:textAlignment="center"
+                    android:textColor="@drawable/check_box_fg_selector"
+                    android:textSize="@dimen/option_media_type" />
             <CheckBox
-                    android:id="@+id/CBType_Sports"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/check_box_bg_selector"
+                    android:button="@null"
                     android:tag="TYPES"
                     android:text="@string/types_name_4"
-                    android:textSize="20sp" />
+                    android:textAlignment="center"
+                    android:textColor="@drawable/check_box_fg_selector"
+                    android:textSize="@dimen/option_media_type" />
 
         </LinearLayout>
 
@@ -198,7 +232,7 @@
                 android:text="@string/option_date_range_tag"
                 android:textAlignment="center"
                 android:textColor="@color/options_section_tag_foreground"
-                android:textSize="25sp" />
+                android:textSize="@dimen/option_tag_text" />
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -212,7 +246,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/date_range_after_tag"
                     android:textAlignment="center"
-                    android:textSize="25sp" />
+                    android:textSize="@dimen/option_media_name" />
 
             <TextView
                     android:id="@+id/TVOptDateStart"
@@ -248,7 +282,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/date_range_before_tag"
                     android:textAlignment="center"
-                    android:textSize="25sp" />
+                    android:textSize="@dimen/option_media_name" />
 
             <TextView
                     android:id="@+id/TVOptDateEnd"

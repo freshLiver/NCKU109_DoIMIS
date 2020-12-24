@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="check_box_checked" parent="Theme.AppCompat.Light">
+        <item name="android:textColor">#FF0000</item>
+        <item name="android:textColorSecondary">#123454</item>
+    </style>
+
+</resources>
