@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -87,9 +88,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                 int width = (int) (v.getContext().getResources().getDisplayMetrics().widthPixels * 0.90);
                 int height = (int) (v.getContext().getResources().getDisplayMetrics().heightPixels * 0.80);
 
+                // get dialog window
+                Window dialogWindow = contentDialog.getWindow();
+
                 // set width and height of dialog at runtime (must set after dialog.show)
-                contentDialog.getWindow().setLayout(width, height);
-                contentDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                dialogWindow.setLayout(width, height);
+                dialogWindow.setBackgroundDrawableResource(android.R.color.transparent);
             }
         });
     }

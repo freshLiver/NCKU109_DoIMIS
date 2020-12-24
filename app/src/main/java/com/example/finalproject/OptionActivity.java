@@ -1,7 +1,5 @@
 package com.example.finalproject;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -104,7 +102,7 @@ public class OptionActivity extends Activity {
 
         // get wish media
         this.checkedMedia.clear();
-        final LinearLayout LLNewsMedia = findViewById(R.id.LLNewsMedia);
+        final LinearLayout LLNewsMedia = findViewById(R.id.LLOptionMedia);
         final ArrayList<View> media = getChildrenWithTag(LLNewsMedia, "MEDIA");
 
         // check all children whose tag is MEDIA_PARENT
