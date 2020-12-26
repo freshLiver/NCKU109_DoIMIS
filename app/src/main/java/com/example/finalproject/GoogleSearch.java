@@ -145,6 +145,7 @@ public class GoogleSearch implements Runnable {
                }
                break;
         }
+        url += keywords;
         return url;
     }
 
