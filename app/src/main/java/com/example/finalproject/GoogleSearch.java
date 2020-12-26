@@ -95,11 +95,11 @@ public class GoogleSearch implements Runnable {
                 }else if(type.equals("國際")){
                     url += "site:https://news.ltn.com.tw/news/world"; 
                 }else if(type.equals("政治")){
-                    url += "https://news.ltn.com.tw/news/politics";
+                    url += "site:https://news.ltn.com.tw/news/politics";
                 }else if (type.equals("財經")){
-                    url += "https://ec.ltn.com.tw/article";
+                    url += "site:https://ec.ltn.com.tw/article";
                 }else if(type.equals("體育")){
-                    url += "https://sports.ltn.com.tw/";
+                    url += "site:https://sports.ltn.com.tw/";
                 }
                 break;
             case "TVBS":
