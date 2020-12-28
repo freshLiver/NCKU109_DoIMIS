@@ -12,7 +12,7 @@ public class LTN extends News{
     }
 	
 	
-	public void Parse_Wedsite(String URL) {
+	public void Parse_Website(String URL) {
 		//Parse.............
 		try {
 			// send get request and parse as html

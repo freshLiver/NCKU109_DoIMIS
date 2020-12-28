@@ -4,7 +4,7 @@ package com.example.finalproject;
 public abstract class News {
 	protected String reporter,content,date,title,site,media,type;
 	
-	public abstract void Parse_Wedsite(String URL);
+	public abstract void Parse_Website(String URL);
 				
 	
 	public String Get_type() {

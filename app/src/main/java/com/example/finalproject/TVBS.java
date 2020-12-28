@@ -13,7 +13,7 @@ public class TVBS extends  News{
     }
 	
 	
-	public void Parse_Wedsite(String URL) {
+	public void Parse_Website(String URL) {
 		try {
           // send get request and parse as html
           final Document parsed = Jsoup.connect(URL).get();
