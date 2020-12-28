@@ -26,7 +26,6 @@ public class OptionActivity extends Activity {
     /***********************************************************************
      * DATA AND CONSTANTS
      ***********************************************************************/
-    private String keywords;
     private ArrayList<String> checkedMedia, checkedTypes;
     public TextView TVStart, TVEnd;
 
@@ -46,15 +45,9 @@ public class OptionActivity extends Activity {
 
 
         // get bundles and set components
-        getBundles();
         setComponents();
     }
 
-    protected void getBundles() {
-        // get keywords from bundle
-        Bundle bundle = this.getIntent().getExtras();
-        this.keywords = bundle.getString(String.valueOf(R.string.bundle_kws_main2opt));
-    }
 
     protected void setComponents() {
 
@@ -116,7 +109,7 @@ public class OptionActivity extends Activity {
             return new Pair<>(false, "請至少句選一項媒體");
 
         // everything fine, build query
-        String query = String.format("%s before:%s after:%s", this.keywords, before, after);
+        String query = String.format("%s+before:%s+after:%s", getKeywords(), before, after);
         return new Pair<>(true, query);
     }
 
@@ -128,7 +121,9 @@ public class OptionActivity extends Activity {
     }
 
     public String getKeywords() {
-        return this.keywords;
+        Bundle bundle = this.getIntent().getExtras();
+        String keywords = bundle.getString(String.valueOf(R.string.bundle_kws_main2opt));
+        return keywords;
     }
 
     public ArrayList<View> getChildrenWithTag(View v, String tag) {
@@ -192,10 +187,9 @@ class OptSearchButtonsMap implements View.OnClickListener {
                     // use bundle to send settings
                     Bundle bundle = new Bundle();
 
-                    String keywords = this.optActivity.getKeywords();
                     ArrayList<String> media = this.optActivity.getMediaAndTypes().first;
                     ArrayList<String> types = this.optActivity.getMediaAndTypes().second;
-                    bundle.putString("KEYWORDS", keywords);
+                    bundle.putString("KEYWORDS", res.second);
                     bundle.putStringArrayList("MEDIA", media);
                     bundle.putStringArrayList("TYPES", types);
 
