@@ -117,7 +117,7 @@ public class GoogleSearch implements Runnable {
                 }
                 break;
             case "CNA":
-                url += "site:https://www.cna.com.tw/";  
+                url += "site:https://www.cna.com.tw/";
                 if(type.equals("社會")){
                     url += "news/asoc";
                 }else if(type.equals("國際")){
@@ -171,7 +171,7 @@ public class GoogleSearch implements Runnable {
             e1.printStackTrace();
         }
         String next = "";
-        int times = 0
+        int times = 0;
         while (true) {
             Elements link = doc_cna.select("div.yuRUbf > a");
             Elements title = doc_cna.select("h3.LC20lb.DKV0Md");

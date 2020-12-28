@@ -2,6 +2,7 @@ package com.example.finalproject;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -14,7 +15,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class NewsContentDialog extends Dialog implements View.OnClickListener {
 
@@ -29,6 +32,11 @@ public class NewsContentDialog extends Dialog implements View.OnClickListener {
 
     protected TextView TVTitles, TVReporters, TVDatetime;
     protected ListView LVContents;
+
+    private MediaPlayer mediaPlayer;
+    private TaiwaneseSynthesis taiwaneseSynthesis;
+    private String wav_path;
+
 
     /***********************************************************************
      * CONSTRUCTOR / onCreate / setComponents
@@ -79,8 +87,31 @@ public class NewsContentDialog extends Dialog implements View.OnClickListener {
                     @Override
                     public void run() {
                         // TODO : convert to taiwanese and play this paragraph in taiwanese
+                        taiwaneseSynthesis= new TaiwaneseSynthesis();
+                        try{
+
+                            wav_path = taiwaneseSynthesis.execute(paragraph).get();
+                            mediaPlayer = new MediaPlayer();
+                            mediaPlayer.setDataSource(wav_path);
+                            mediaPlayer.prepare();
+                            mediaPlayer.start();
+                            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                @Override
+                                public void onCompletion(MediaPlayer mp) {
+                                    mp.release();
+                                }
+                            });
+                        }catch(ExecutionException e){
+                            e.printStackTrace();
+                        }catch(InterruptedException e){
+                            e.printStackTrace();
+                        }catch(IOException e){
+                            e.printStackTrace();
+                        }
+
                     }
                 });
+                thPlay.start();
             }
         });
     }

@@ -1,22 +1,39 @@
 package com.example.finalproject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.concurrent.ExecutionException;
+
+import java.util.ArrayList;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import java.io.*;
 
 public class MainActivity extends Activity {
 
@@ -28,8 +45,15 @@ public class MainActivity extends Activity {
     protected TextView TVHistoryDate, TVHistoryContent;
 
     /// 歷史上的今天相關變數
-    protected ArrayList<String[]> historyEvents;        // 所有歷史上的今天的事件，每個 element 為 String[Time,Intro]
-    protected int iHistory;                             // 當前顯示的是哪個事件（index）
+    public ArrayList<String[]> historyEvents;        // 所有歷史上的今天的事件，每個 element 為 String[Time,Intro]
+    public int iHistory;                             // 當前顯示的是哪個事件（index）
+
+    private ImageView mic,mic_red;
+    private TaiwaneseRecorder taiwaneseRecorder;
+    private MediaRecorder mediaRecorder = null;
+    private File recordFile;
+    private String taiRecString;
+
 
     /***********************************************************************
      * Constructors/onCreate & get bundle & component settings
@@ -43,6 +67,8 @@ public class MainActivity extends Activity {
 
         // get components and set their events
         setComponents();
+        checkPermission();
+        button();
 
         // init today's history
         try {
@@ -66,9 +92,81 @@ public class MainActivity extends Activity {
         // ! button clicked event
         this.BtnOptSearch.setOnClickListener(new MainButtonsMap(this));
         this.BtnPlayHistory.setOnClickListener(new MainButtonsMap(this));
-
+        this.BtnVoiceInput.setOnClickListener(new MainButtonsMap(this));
         // ! history content clicked event
         this.TVHistoryContent.setOnClickListener(v -> changeHistory(false));
+    }
+
+    public void button(){
+        BtnVoiceInput.setOnTouchListener(new View.OnTouchListener(){
+            public boolean onTouch(View view , MotionEvent motionEvent){
+                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                    //mic_red.setVisibility(View.VISIBLE);
+                    //mic.setVisibility(View.INVISIBLE);
+                    try{
+                        recordFile=File.createTempFile("record_temp" ,"m4a", getCacheDir());
+                        mediaRecorder = new MediaRecorder();
+                        mediaRecorder.setOutputFile(recordFile.getAbsolutePath());
+                        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+                        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+                        mediaRecorder.setAudioEncodingBitRate(326000);
+                        mediaRecorder.setAudioSamplingRate(44100);
+                        mediaRecorder.setAudioChannels(1);
+                        mediaRecorder.prepare();
+                        mediaRecorder.start();
+                    }
+                    catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+                else if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                    //mic_red.setVisibility(View.INVISIBLE);
+                    //mic.setVisibility(View.INVISIBLE);
+                    Toast.makeText(MainActivity.this,"處理中，請稍等一下",Toast.LENGTH_SHORT).show();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            endTaiwaneseRecognition();
+                        }
+                    },500);
+
+                }
+                return true;
+            }
+        });
+    }
+
+    public void endTaiwaneseRecognition(){
+        mediaRecorder.stop();
+        mediaRecorder.reset();
+        mediaRecorder.release();
+        mediaRecorder = null;
+        taiwaneseRecorder = new TaiwaneseRecorder();
+        try{
+            taiRecString = taiwaneseRecorder.execute(recordFile.getAbsolutePath()).get();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }catch(ExecutionException e){
+            e.printStackTrace();
+        }
+        ETKeywords.setText(taiRecString);
+    }
+
+    public void checkPermission(){
+        int recordPermission = ActivityCompat.checkSelfPermission(this , Manifest.permission.RECORD_AUDIO);
+        int writePermission = ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int readPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        if(writePermission!= PackageManager.PERMISSION_GRANTED || readPermission!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE},1);
+        }
+
+        if(recordPermission != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.RECORD_AUDIO},1);
+        }
+
     }
 
     /***********************************************************************
@@ -84,7 +182,47 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
                 // TODO get history event list
+                Calendar today = Calendar.getInstance();
+                int month_tmp=today.get(Calendar.MONTH) + 1;
+                String month= Integer.toString(month_tmp);
+                int day_tmp = today.get(Calendar.DAY_OF_MONTH);
+                String day=Integer.toString(day_tmp);
+                try {
+                    historyEvents = new ArrayList<>();
 
+                    String page = "https://zh.wikipedia.org/zh-tw/" + month + "%E6%9C%88" + day + "%E6%97%A5";
+                    Document document = Jsoup.connect(page).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                            + "(KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36").get();
+                    Elements parentElement = document.getElementsByTag("ul");
+                    boolean flag = false;
+                    //ArrayList<String> event_list = new ArrayList<>();
+                    //ArrayList<Integer> event_year = new ArrayList<>();
+                    for (Element ele : parentElement) {
+                        Elements childElement = ele.getElementsByTag("li");
+                        for (Element ele_child : childElement) {
+                            String name = ele_child.text();
+                            if (check_event(name)) {
+                                if (check_year(name) > 1900) {
+                                    flag = true;
+                                }
+                                if (flag) {
+                                    if (check_year(name) > 1900) {
+                                        //event_list.add(seperate(name));
+                                        //event_year.add(check_year(name));
+                                        historyEvents.add(new String[]{ Integer.toString(check_year(name)),seperate(name)});
+
+                                    } else {
+                                        break;
+                                    }
+                                } else {
+                                    historyEvents.add(new String[]{ Integer.toString(check_year(name)),seperate(name)});
+                                }
+                            }
+                        }
+                    }
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
 //                ↓ SAMPLE CODE
 //                historyEvents = returnYourHistoryEventsHere();
 
@@ -107,7 +245,59 @@ public class MainActivity extends Activity {
         // 更新 UI 以及 index
         changeHistory(true);
     }
+    public static boolean check_event(String text) { //check whether events or not
+        String tmp="";
+        for(int i=0;i<text.length();i++) {
+            if(text.charAt(i) == '年') {
+                try {
+                    int result = Integer.parseInt(tmp);
+                    if(result >0 || result <2100) {
+                        return true;
+                    }
+                }catch(NumberFormatException e) {
+                    return false;
+                }
+            }
+            else {
+                tmp+=text.charAt(i);
+            }
+        }
 
+        return false;
+    }
+
+    public static int check_year(String text) {
+        String tmp="";
+        for(int i=0;i<text.length();i++) {
+            if(text.charAt(i) == '年') {
+                try {
+                    int result = Integer.parseInt(tmp);
+                    return result;
+                }catch(NumberFormatException e) {
+                    return 0;
+                }
+            }
+            else {
+                tmp+=text.charAt(i);
+            }
+        }
+        return 0;
+    }
+
+    public static String seperate(String text) {
+        String tmp="";
+        for(int i=0;i<text.length();i++) {
+            if(text.charAt(i) == '年') {
+                try {
+                    //int result = Integer.parseInt(tmp);
+                    return text.substring(i+2,text.length());
+                }catch(NumberFormatException e) {
+                    return "";
+                }
+            }
+        }
+        return "";
+    }
     /**
      * 切換到下一個歷史事件
      *
@@ -117,6 +307,7 @@ public class MainActivity extends Activity {
     protected void changeHistory(boolean isInit) {
         // get today date
         Calendar today = Calendar.getInstance();
+
 
         // 如果不是正在初始化的話就需要 ++index (超出範圍後會回到 index 0)
         if (isInit == false && this.historyEvents != null)
@@ -134,6 +325,7 @@ public class MainActivity extends Activity {
 
             // 將 TextView 的 text 設定為 event 的簡介
             this.TVHistoryContent.setText(this.historyEvents.get(this.iHistory)[1]);
+            //this.TVHistoryContent.setText(this.event_list.get(0));
         } else {
 
             // 如果沒有事件的話則顯示無事件
@@ -164,16 +356,28 @@ public class MainActivity extends Activity {
 
 
 class MainButtonsMap implements OnClickListener {
-
+    private MediaPlayer mediaPlayer;
+    private TaiwaneseSynthesis taiwaneseSynthesis;
+    private String wav_path;
     public MainActivity main;
+
+
+
+
+
 
     public MainButtonsMap(MainActivity main) {
         this.main = main;
     }
 
+
+
+
     @Override
     @SuppressLint("NonConstantResourceId")
     public void onClick(View v) {
+
+
         switch (v.getId()) {
 
             /// 搜尋
@@ -201,6 +405,28 @@ class MainButtonsMap implements OnClickListener {
                     @Override
                     public void run() {
                         // TODO convert and play taiwanese here
+
+                        taiwaneseSynthesis= new TaiwaneseSynthesis();
+                        try{
+
+                            wav_path = taiwaneseSynthesis.execute("台語內容").get();
+                            mediaPlayer = new MediaPlayer();
+                            mediaPlayer.setDataSource(wav_path);
+                            mediaPlayer.prepare();
+                            mediaPlayer.start();
+                            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                @Override
+                                public void onCompletion(MediaPlayer mp) {
+                                    mp.release();
+                                }
+                            });
+                        }catch(ExecutionException e){
+                            e.printStackTrace();
+                        }catch(InterruptedException e){
+                            e.printStackTrace();
+                        }catch(IOException e){
+                            e.printStackTrace();
+                        }
                     }
                 });
 
