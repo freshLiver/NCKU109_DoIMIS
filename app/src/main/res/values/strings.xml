@@ -5,12 +5,12 @@
 
 
     <string name="option_media_tag">請點選想看的媒體</string>
-    <string name="media_name_r0c0">TVBS新聞網</string>
-    <string name="media_name_r0c1">中時電子報</string>
-    <string name="media_name_r1c0">新頭殼新聞網</string>
+    <string name="media_name_r0c0">自由時報</string>
+    <string name="media_name_r0c1">TVBS新聞網</string>
+    <string name="media_name_r1c0">中央社新聞</string>
     <string name="media_name_r1c1">蘋果日報</string>
-    <string name="media_name_r2c0">自由時報</string>
-    <string name="media_name_r2c1">三立新聞網</string>
+    <string name="media_name_r2c0">三立新聞網</string>
+    <string name="media_name_r2c1">新頭殼新聞網</string>
 
     <string name="option_types_tag">請點選新聞類別</string>
     <string name="types_name_0">國際</string>
