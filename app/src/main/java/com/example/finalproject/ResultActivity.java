@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -28,6 +30,8 @@ public class ResultActivity extends Activity {
 
     protected Button BtnResultBackToOpt;
 
+    protected Context context;
+
     /***********************************************************************
      * Constructors/onCreate & get bundle & component settings
      ***********************************************************************/
@@ -37,6 +41,8 @@ public class ResultActivity extends Activity {
         // must before setContentView
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.setContentView(R.layout.activity_result);
+
+        this.context = this;
 
         // get bundles and set components
         getBundles();
@@ -59,8 +65,6 @@ public class ResultActivity extends Activity {
     protected void setComponents() {
         // set button listener
         this.BtnResultBackToOpt = this.findViewById(R.id.BtnResultBackToOpt);
-        Button BtnResultBackToOpt = findViewById(R.id.BtnResultBackToOpt);
-        BtnResultBackToOpt.setOnClickListener(new ResultButtonMapping(this));
 
         // finish while back clicked
         this.BtnResultBackToOpt.setOnClickListener(v -> finish());
@@ -89,42 +93,13 @@ public class ResultActivity extends Activity {
         // TODO should also insert to this.results
     }
 
+    public void showToast(String msg) {
+        runOnUiThread(() -> Toast.makeText(context, msg, Toast.LENGTH_SHORT).show());
+    }
 
     /***********************************************************************
      * GETTERS/SETTERS
      ***********************************************************************/
 
 
-}
-
-class ResultButtonMapping implements View.OnClickListener {
-
-    private final ResultActivity src;
-    private RecyclerView rv;
-
-    public ResultButtonMapping(ResultActivity main) {
-        this.src = main;
-    }
-
-    @Override
-    @SuppressLint("NonConstantResourceId")
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.BtnResultBackToOpt:
-
-                // sample data to insert a news item
-                String[] newsItem = new String[]{
-                        "News Title ",
-                        "this is a new intro",
-                        "link",
-                        "Media Name"
-                };
-                // insert item into recyclerview
-                this.src.insertNewsItem(newsItem);
-
-                break;
-            default:
-                break;
-        }
-    }
 }

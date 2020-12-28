@@ -50,11 +50,13 @@ public class GoogleSearch implements Runnable {
         int numMedia = this.targetMedia.size();
 
         // THIS IS FOR TESTING
-        this.resActivity.insertNewsItem(new String[]{"TITLE", "CONTENT", "LINK", "MEDIA"});
+//        this.resActivity.insertNewsItem(new String[]{"TITLE", "CONTENT", "LINK", "MEDIA"});
 
         // 根據 type 以及 media 決定 google 搜尋的關鍵字然後進行搜尋、更新結果
         for (int iType = 0; iType < numTypes; ++iType)
             for (int iMedia = 0; iMedia < numMedia; ++iMedia) {
+                this.resActivity.showToast("正在搜尋，請稍候");
+
                 // get target type and media name
                 String type = this.targetTypes.get(iType);
                 String media = this.targetMedia.get(iMedia);
@@ -63,14 +65,14 @@ public class GoogleSearch implements Runnable {
                 String searchURL = getSearchURLByTypeAndMedia(type, media);
 
                 // get search results
-                ArrayList<String[]> searchResults = new ArrayList<>();
+                ArrayList<String[]> searchResults = getSearchResults(searchURL, media);
 
-//                searchResults.addAll(getSearchResults(searchURL, media));
                 // insert results into RecyclerView
-                for (String[] info : searchResults) {
+                for (String[] info : searchResults)
                     resActivity.insertNewsItem(info);
-                }
+
             }
+        this.resActivity.showToast("搜尋完成，請點擊新聞");
     }
 
 
@@ -79,73 +81,71 @@ public class GoogleSearch implements Runnable {
      ***********************************************************************/
 
     /**
-     * TODO, choose url by type and media name and keywords
+     * build search url by type and media name and keywords
      *
      * @param type  target type
      * @param media target media name
      * @return google search url
      */
-    protected String getSearchURLByTypeAndMedia(String type, String media) {      
-        // TODO
-        String url = GoogleSearchBaseKeyword;
-        switch(media){
-            case "LTN":
-                if(type.equals("社會")){
+    protected String getSearchURLByTypeAndMedia(String type, String media) {
+        String url = GoogleSearchBaseKeyword + "+" + this.keywords + "+";
+        switch (media) {
+            case "自由時報":
+                if (type.equals("社會")) {
                     url += "site:https://news.ltn.com.tw/news/society";
-                }else if(type.equals("國際")){
-                    url += "site:https://news.ltn.com.tw/news/world"; 
-                }else if(type.equals("政治")){
+                } else if (type.equals("國際")) {
+                    url += "site:https://news.ltn.com.tw/news/world";
+                } else if (type.equals("政治")) {
                     url += "site:https://news.ltn.com.tw/news/politics";
-                }else if (type.equals("財經")){
+                } else if (type.equals("財經")) {
                     url += "site:https://ec.ltn.com.tw/article";
-                }else if(type.equals("體育")){
+                } else if (type.equals("體育")) {
                     url += "site:https://sports.ltn.com.tw/";
                 }
                 break;
-            case "TVBS":
-                url += "site:https://news.tvbs.com.tw/"; 
-                if(type.equals("社會")){
+            case "TVBS新聞網":
+                url += "site:https://news.tvbs.com.tw/";
+                if (type.equals("社會")) {
                     url += "local";
-                }else if(type.equals("國際")){
+                } else if (type.equals("國際")) {
                     url += "world";
-                }else if(type.equals("政治")){
+                } else if (type.equals("政治")) {
                     url += "politics";
-                }else if (type.equals("財經")){
+                } else if (type.equals("財經")) {
                     url += "money";
-                }else if(type.equals("體育")){
+                } else if (type.equals("體育")) {
                     url += "sports";
                 }
                 break;
-            case "CNA":
-                url += "site:https://www.cna.com.tw/";  
-                if(type.equals("社會")){
+            case "中央社新聞":
+                url += "site:https://www.cna.com.tw/";
+                if (type.equals("社會")) {
                     url += "news/asoc";
-                }else if(type.equals("國際")){
+                } else if (type.equals("國際")) {
                     url += "news/aopl";
-                }else if(type.equals("政治")){
-                     url += "news/aipl";
-                }else if (type.equals("財經")){
+                } else if (type.equals("政治")) {
+                    url += "news/aipl";
+                } else if (type.equals("財經")) {
                     url += "news/afe";
-                }else if(type.equals("體育")){
+                } else if (type.equals("體育")) {
                     url += "news/aspt";
-               }
+                }
                 break;
-          case "Appledaily":
-               url += "site:https://tw.appledaily.com/";  
-               if(type.equals("社會")){
+            case "蘋果日報":
+                url += "site:https://tw.appledaily.com/";
+                if (type.equals("社會")) {
                     url += "local";
-                }else if(type.equals("國際")){
-                     url += "international";
-                }else if(type.equals("政治")){
-                     url += "politics";
-                }else if (type.equals("財經")){
-                     url += "property";
-                }else if(type.equals("體育")){
-                     url += "sports";
-               }
-               break;
+                } else if (type.equals("國際")) {
+                    url += "international";
+                } else if (type.equals("政治")) {
+                    url += "politics";
+                } else if (type.equals("財經")) {
+                    url += "property";
+                } else if (type.equals("體育")) {
+                    url += "sports";
+                }
+                break;
         }
-        url += keywords;
         return url;
     }
 
@@ -171,7 +171,7 @@ public class GoogleSearch implements Runnable {
             e1.printStackTrace();
         }
         String next = "";
-        int times = 0
+        int times = 0;
         while (true) {
             Elements link = doc_cna.select("div.yuRUbf > a");
             Elements title = doc_cna.select("h3.LC20lb.DKV0Md");
@@ -194,12 +194,11 @@ public class GoogleSearch implements Runnable {
             for (Element ele : page) {
                 next = ele.attr("href");
             }
-            if (link.size() == 10&&times!=3) {
+            if (link.size() == 10 && times != 3) {
                 next = "https://www.google.com" + next;
                 try {
                     doc_cna = Jsoup.connect(next).get();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             } else {
