@@ -100,7 +100,7 @@ public class GoogleSearch implements Runnable {
                 } else if (type.equals("財經")) {
                     url += "site:https://ec.ltn.com.tw/article";
                 } else if (type.equals("體育")) {
-                    url += "site:https://sports.ltn.com.tw/";
+                    url += "site:https://sports.ltn.com.tw/news/breakingnews";
                 }
                 break;
             case "TVBS新聞網":
