@@ -5,13 +5,16 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class TVBS extends  News{
-	public TVBS(String site,String type) {
-        this.site = site;
+public class TVBS extends  News implements  Runnable{
+	public TVBS(String type,String url) {
         this.type = type;
+        this.url = url;
         media = "TVBS";
     }
-	
+    @Override
+    public void run() {
+        Parse_Website(url);
+    }
 	
 	public void Parse_Website(String URL) {
 		try {
