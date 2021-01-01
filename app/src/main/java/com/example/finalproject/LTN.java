@@ -4,7 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-public class LTN extends Newsimplements  Runnable{
+public class LTN extends News implements  Runnable{
 	public LTN(String type,String url) {
         this.type = type;
         this.url = url;
