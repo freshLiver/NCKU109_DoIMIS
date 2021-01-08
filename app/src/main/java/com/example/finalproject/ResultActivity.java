@@ -1,22 +1,16 @@
 package com.example.finalproject;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
 
 public class ResultActivity extends Activity {
 
@@ -89,8 +83,6 @@ public class ResultActivity extends Activity {
             // only main thread can update ui
             runOnUiThread(() -> adp.insertNewsItem(newsItem));
         }
-
-        // TODO should also insert to this.results
     }
 
     public void showToast(String msg) {

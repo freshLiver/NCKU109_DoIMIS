@@ -8,16 +8,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
+import java.util.Arrays;
 
 public class NewsContentDialog extends Dialog implements View.OnClickListener {
 
@@ -25,26 +22,28 @@ public class NewsContentDialog extends Dialog implements View.OnClickListener {
      * DATA AND CONSTANTS
      ***********************************************************************/
     protected Context context;
-    protected String newsURL;
+    protected String newsMedia, newsURL;
 
     protected ArrayList<String> contentParagraphs;
     protected ArrayAdapter<String> arrayAdapter;
 
-    protected TextView TVTitles, TVReporters, TVDatetime;
+    protected TextView TVTitles, TVReporters, TVDatetime, TVMedia;
     protected ListView LVContents;
 
     private MediaPlayer mediaPlayer;
     private TaiwaneseSynthesis taiwaneseSynthesis;
+
     private String wav_path;
 
 
     /***********************************************************************
      * CONSTRUCTOR / onCreate / setComponents
      ***********************************************************************/
-    public NewsContentDialog(@NonNull Context context, String url) {
+    public NewsContentDialog(@NonNull Context context, String media, String url) {
         super(context);
         this.context = context;
 
+        this.newsMedia = media;
         this.newsURL = url;
     }
 
@@ -60,6 +59,7 @@ public class NewsContentDialog extends Dialog implements View.OnClickListener {
 
         // crawl this page
         getNewsInfo();
+
     }
 
     protected void setComponents() {
@@ -67,6 +67,7 @@ public class NewsContentDialog extends Dialog implements View.OnClickListener {
         this.TVTitles = this.findViewById(R.id.TVNewsContentTitle);
         this.TVDatetime = this.findViewById(R.id.TVNewsContentDateTime);
         this.TVReporters = this.findViewById(R.id.TVNewsContentReporters);
+        this.TVMedia = this.findViewById(R.id.TVNewsContentMedia);
         this.LVContents = this.findViewById(R.id.LVNewsContentContents);
 
         // set list view adapter and style
@@ -81,14 +82,13 @@ public class NewsContentDialog extends Dialog implements View.OnClickListener {
                 // get corresponding paragraph with position
                 String paragraph = contentParagraphs.get(pos);
 
-                // TODO : speak this paragraph in taiwanese
-                Toast.makeText(v.getContext(), paragraph, Toast.LENGTH_SHORT).show();
+                // speak this paragraph in taiwanese
                 Thread thPlay = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        // TODO : convert to taiwanese and play this paragraph in taiwanese
-                        taiwaneseSynthesis= new TaiwaneseSynthesis();
-                        try{
+                        // convert to taiwanese and play this paragraph in taiwanese
+                        taiwaneseSynthesis = new TaiwaneseSynthesis();
+                        try {
 
                             wav_path = taiwaneseSynthesis.execute(paragraph).get();
                             mediaPlayer = new MediaPlayer();
@@ -101,7 +101,7 @@ public class NewsContentDialog extends Dialog implements View.OnClickListener {
                                     mp.release();
                                 }
                             });
-                        }catch(Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -128,42 +128,50 @@ public class NewsContentDialog extends Dialog implements View.OnClickListener {
     protected void getNewsInfo() {
         try {
             // use another thread to crawl news info (title, reporter, datetime, contents)
-            String[] info = new String[4];
+            String[] info = null;
 
-            Thread thCrawler = new Thread(() -> {
-                // TODO : call crawler and get news content info
-                // info = getCrawlerResult(this.newsURL);
+            // call crawler and get news content info
+            News crawler;
+            switch (this.newsMedia) {
+                case "蘋果日報":
+                    crawler = new Appledaily(this.newsURL);
+                    break;
+                case "自由時報":
+                    crawler = new LTN(this.newsURL);
+                    break;
+                case "中央社新聞":
+                    crawler = new CNA(this.newsURL);
+                    break;
+                case "TVBS新聞網":
+                    crawler = new TVBS(this.newsURL);
+                    break;
+                default:
+                    throw new IllegalStateException("Unknown News Media: " + this.newsMedia);
+            }
 
-                // THIS IS SAMPLE
-                info[0] = "這是標題測試";
-                info[1] = "記者";
-                info[2] = "時間日期";
-                info[3] = "這是\n內文\n測試";
-            });
-
-            // start and wait this thread to crawl news info
-            thCrawler.start();
-            thCrawler.join();
+            Thread th = new Thread(crawler);
+            th.start();
+            th.join();
 
             //  update ui
+            info = crawler.getArticleInfo();
             if (info != null) {
+
                 this.TVTitles.setText(info[0]);
-                this.TVReporters.setText(info[1]);
-                this.TVDatetime.setText(info[2]);
+                this.TVMedia.setText(info[1]);
+                this.TVReporters.setText(info[2]);
+                this.TVDatetime.setText(info[3]);
 
-                // TODO : split content into paragraphs
+                // split content into paragraphs
+                String[] paragraphs = info[4].replace("。", "。\n").split("\n");
+
                 // add content into newsContents and notify item changed
-                this.contentParagraphs.add(info[3]);
-
-                this.contentParagraphs.add("這是2");
-                this.contentParagraphs.add("這是3");
-                this.contentParagraphs.add("這是4");
-                this.contentParagraphs.add("info[3]");
+                this.contentParagraphs.addAll(Arrays.asList(paragraphs));
                 this.arrayAdapter.notifyDataSetChanged();
 
             }
 
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

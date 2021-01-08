@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -78,10 +79,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
             @Override
             public void onItemClick(View v, int position) {
                 // get clicked item url
+                String src = media.get(position);
                 String link = links.get(position);
 
+
                 // init a dialog for showing news contents
-                NewsContentDialog contentDialog = new NewsContentDialog(v.getContext(), link);
+                NewsContentDialog contentDialog = new NewsContentDialog(v.getContext(), src, link);
                 contentDialog.show();
 
                 // get view width and height

@@ -11,25 +11,20 @@
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RVSearchResults"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="11">
 
     </androidx.recyclerview.widget.RecyclerView>
 
-
-    <LinearLayout
+    <Button
+            android:id="@+id/BtnResultBackToOpt"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_margin="5dp"
-            android:layout_weight="1">
 
-        <Button
-                android:id="@+id/BtnResultBackToOpt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="返回搜尋頁面"
-                android:textSize="25sp" />
-    </LinearLayout>
+            android:text="返回搜尋頁面"
+            android:textSize="25sp" />
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>
