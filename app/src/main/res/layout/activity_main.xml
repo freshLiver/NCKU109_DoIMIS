@@ -4,25 +4,24 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@color/main_background"
+        android:orientation="vertical"
         tools:context=".MainActivity">
 
-    <TextView
+    <ImageView
             android:id="@+id/TVMainTitle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:text="@string/project_title"
-            android:textSize="50sp" />
+            android:layout_weight="5"
+            android:scaleType="fitCenter"
+            android:src="@drawable/title" />
 
     <LinearLayout
             android:id="@+id/LLOptSearchMain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -38,21 +37,25 @@
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-            <Button
+            <ImageButton
                     android:id="@+id/BtnVoiceInput"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="5dp"
                     android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:src="@drawable/speak"
                     android:text="台語語音輸入"
                     android:textSize="20sp" />
 
-            <Button
+            <ImageButton
                     android:id="@+id/BtnOptSearch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="5dp"
                     android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:src="@drawable/search"
                     android:text="設定搜尋條件"
                     android:textSize="20sp" />
 
@@ -64,14 +67,15 @@
             android:id="@+id/LLHistoryMain"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
-            android:orientation="vertical">
+            android:layout_weight="4"
+            android:background="@drawable/main_history_rounded_background"
+            android:orientation="vertical"
+            android:padding="5dp">
 
         <LinearLayout
                 android:id="@+id/LLHistoryInfoAndPlay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#C5C5C5"
                 android:orientation="horizontal">
 
             <TextView
@@ -82,8 +86,9 @@
                     android:layout_weight="5"
                     android:text="西元 YYYY / MM / DD "
                     android:textAlignment="center"
-                    android:textColor="#000000"
+                    android:textColor="@color/main_history_date_fg"
                     android:textSize="22sp"
+
                     android:typeface="monospace" />
 
             <Button
@@ -101,10 +106,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="#D1D1D1"
+                android:padding="5dp"
                 android:text="History Today Content\n(Touch To Change)"
                 android:textAlignment="center"
-                android:textSize="25sp" />
+                android:maxLines = "5"
+                android:textColor="@color/main_history_content_fg"
+                android:textSize="23sp" />
 
     </LinearLayout>
 

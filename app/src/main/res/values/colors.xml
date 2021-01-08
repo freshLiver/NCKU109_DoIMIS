@@ -9,7 +9,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
 
-    <color name="main_background">#ffffffff</color>
+    <color name="main_background">#D8DBE2</color>
+
+    <!--    main page color settings-->
+    <color name="main_history_date_fg">#343434</color>
+    <color name="main_history_content_bg">#A9BCD0</color>
+    <color name="main_history_content_fg">#343434</color>
+    <color name="main_history_border">#D8DBE2</color>
 
     <!-- option page color settings -->
 

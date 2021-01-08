@@ -12,12 +12,14 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.method.ScrollingMovementMethod;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +44,8 @@ public class MainActivity extends Activity {
     /***********************************************************************
      * DATA AND CONSTANTS
      ***********************************************************************/
-    protected Button BtnOptSearch, BtnVoiceInput, BtnPlayHistory;
+    protected ImageButton BtnOptSearch, BtnVoiceInput;
+    protected Button BtnPlayHistory;
     protected EditText ETKeywords;
     protected TextView TVHistoryDate, TVHistoryContent;
 
@@ -97,6 +100,7 @@ public class MainActivity extends Activity {
         this.BtnVoiceInput.setOnClickListener(new MainButtonsMap(this));
         // ! history content clicked event
         this.TVHistoryContent.setOnClickListener(v -> changeHistory(false));
+        this.TVHistoryContent.setMovementMethod(new ScrollingMovementMethod());
     }
 
     public void button() {
