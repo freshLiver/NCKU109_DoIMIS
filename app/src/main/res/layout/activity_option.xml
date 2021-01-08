@@ -39,6 +39,7 @@
                     android:gravity="center"
 
                     android:tag="MEDIA"
+                    android:checked="true"
                     android:text="@string/media_name_r0c0"
                     android:textAlignment="center"
                     android:textColor="@drawable/check_box_fg_selector"

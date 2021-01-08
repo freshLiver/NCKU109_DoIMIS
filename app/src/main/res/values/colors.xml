@@ -22,8 +22,8 @@
     <color name="options_section_tag_foreground">#272643</color>
     <color name="options_section_tag_background">#e3e3e3</color>
 
-    <color name="check_box_selected_bg">#7CCF80</color>
-    <color name="check_box_no_selected_bg">#7A005004</color>
+    <color name="check_box_selected_bg">#00A6A6</color>
+    <color name="check_box_no_selected_bg">#61004C4C</color>
     <color name="check_box_selected_fg">#FFFFFF</color>
     <color name="check_box_no_selected_fg">#ABFFFFFF</color>
 

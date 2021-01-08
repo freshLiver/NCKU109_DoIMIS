@@ -19,7 +19,7 @@
     <string name="types_name_3">財經</string>
     <string name="types_name_4">體育</string>
 
-    <string name="option_date_range_tag">請點選時間範圍</string>
+    <string name="option_date_range_tag">請點擊設定日期範圍</string>
     <string name="date_range_after_tag">從：</string>
     <string name="date_range_before_tag">到：</string>
     <string name="default_date_format">YYYY-MM-DD</string>
