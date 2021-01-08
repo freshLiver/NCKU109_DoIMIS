@@ -22,7 +22,9 @@ public class GoogleSearch implements Runnable {
     protected static final String GoogleSearchBaseKeyword = "https://www.google.com/search?q=";
     protected ArrayList<String> targetTypes, targetMedia;
     protected ResultActivity resActivity;
-
+    
+    protected boolean skip_flag = false;
+    
     protected String keywords;
 
     /***********************************************************************
@@ -100,7 +102,7 @@ public class GoogleSearch implements Runnable {
                 } else if (type.equals("財經")) {
                     url += "site:https://ec.ltn.com.tw/article";
                 } else if (type.equals("體育")) {
-                    url += "site:https://sports.ltn.com.tw/";
+                    url += "site:https://sports.ltn.com.tw/news/breakingnews";
                 }
                 break;
             case "TVBS新聞網":
@@ -179,7 +181,11 @@ public class GoogleSearch implements Runnable {
             times++;
             for (Element ele : link) {
                 String url = ele.attr("href");
-                URL_List.add(url);
+                if(!url.equals("https://news.tvbs.com.tw/money")&&!url.equals("https://news.tvbs.com.tw/sports")){
+                    URL_List.add(url);
+                }else{
+                    skip_flag = true;
+                }
             }
 
             for (Element ele : title) {
@@ -190,6 +196,12 @@ public class GoogleSearch implements Runnable {
                 String url = ele.text();
                 text_List.add(url);
             }
+            if(skip_flag){
+                title_List.remove(0);
+                text_List.remove(0);
+                skip_flag = false;
+            }
+            
             Elements page = doc_cna.select("td.d6cvqb > a");
             for (Element ele : page) {
                 next = ele.attr("href");

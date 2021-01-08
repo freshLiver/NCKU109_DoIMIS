@@ -4,13 +4,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-public class LTN extends News{
-	public LTN(String site,String type) {
-        this.site = site;
+public class LTN extends News implements  Runnable{
+	public LTN(String type,String url) {
         this.type = type;
+        this.url = url;
         media = "LTN";
     }
-	
+
+    @Override
+    public void run() {
+        Parse_Website(url);
+    }
 	
 	public void Parse_Website(String URL) {
 		//Parse.............

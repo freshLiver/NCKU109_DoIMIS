@@ -4,13 +4,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 
-public class Appledaily extends News{
-	public Appledaily(String site,String type) {
-        this.site = site;
-        this.type = type;
-        media = "Appledaily";
-    }
-	
+public class Appledaily extends News implements  Runnable{
+	public Appledaily(String type,String url) {
+		this.type = type;
+		this.url = url;
+        	media = "Appledaily";
+    	}
+
+	@Override
+	public void run() {
+		Parse_Website(url);
+	}
 	
 	public void Parse_Website(String URL) {
 		//Parse.............

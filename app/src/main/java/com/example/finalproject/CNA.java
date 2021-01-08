@@ -5,14 +5,17 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 
-public class CNA extends News{
-	public CNA(String site,String type) {
-        this.site = site;
+public class CNA extends News implements Runnable{
+	public CNA(String type,String url) {
         this.type = type;
-        media = "NewTalk";
+        this.url = url;
+        media = "CNA";
+
     }
-	
-	
+	@Override
+	public void run() {
+		Parse_Website(url);
+	}
 	public void Parse_Website(String URL) {
 		try {
 
