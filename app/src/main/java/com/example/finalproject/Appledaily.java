@@ -19,7 +19,7 @@ public class Appledaily extends News {
 
         try {
             // send get request and parse as html
-            Document doc_apple = Jsoup.connect("https://tw.appledaily.com/local/20200703/PIEAD3K4RMRV4HYBZ3LVRGYX34").get();
+            Document doc_apple = Jsoup.connect(URL).get();
             
             
             //get title
@@ -35,26 +35,31 @@ public class Appledaily extends News {
             ArrayList ad = new ArrayList();
             Elements es = doc_apple.getElementsByTag("script");
             for (Element child : es) {
-            	ad.add(child.toString());
+                ad.add(child.toString());
             }
-
             String y = ad.get(17).toString();
             int x = y.indexOf("raw_html");
             if(x!=-1) {
-            	int t = y.indexOf("}", x+21);
+                int t = y.indexOf("}", x+21);
                 y=y.substring(x+21, t);
                 y = y.replace("<br />", "");
                 y = y.replace("&nbsp;", "");
-                reporter = y;
-                y = y.substring(0, y.lastIndexOf("。") + 1);
-                content +=y;                
-            }else {
-            	reporter = content;
-                content = content.substring(0, content.lastIndexOf("。") + 1);
+                y = y.replace("<BR>", "");
+                content +=y;
             }
-
-            //get reporter
-            reporter = reporter.substring(reporter.lastIndexOf("。") + 1, reporter.lastIndexOf("報導")+3);
+            if(content.indexOf("《蘋果》關心你")!=-1) {
+                content = content.substring(0, content.indexOf("《蘋果》關心你"));
+            }
+            if(content.substring(0, 1).equals("【")) {
+                reporter =content.substring(0, content.indexOf("報導")+3);
+                content = content.substring(content.indexOf("報導")+3, content.lastIndexOf("。") + 1);
+            }else if(content.lastIndexOf("報導）")!=-1){
+                reporter = content.substring(content.lastIndexOf("。") + 1, content.lastIndexOf("報導")+3);
+                content = content.substring(0,content.lastIndexOf("。") + 1);
+            }else {
+                content = content.substring(0,content.lastIndexOf("。") + 1);
+                reporter = "無記者";
+            }
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
