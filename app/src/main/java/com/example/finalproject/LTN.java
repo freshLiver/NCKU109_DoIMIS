@@ -28,7 +28,12 @@ public class LTN extends News {
             date = datetime.text();
 
             //get content     
-            final Element articleAndPhotos = mainContent.getElementsByClass("text boxTitle boxText").first();
+            Element articleAndPhotos = mainContent.getElementsByClass("text boxTitle boxText").first();
+
+            // if articleAndPhotos is null
+            if (articleAndPhotos == null)
+                articleAndPhotos = mainContent.getElementsByClass("text").first();
+
             final StringBuilder contents = new StringBuilder();
             for (Element child : articleAndPhotos.children())
                 if ("p".equals(child.tagName()) == true && "".equals(child.className()) == true)
@@ -36,8 +41,14 @@ public class LTN extends News {
             content = contents.toString().substring(contents.toString().indexOf("〕") + 1);
 
             //get reporter
-            final String reporters = contents.substring(contents.toString().indexOf("〔"), contents.toString().indexOf("〕") + 1);
-            reporter = reporters;
+            int begin = contents.toString().indexOf("〔");
+            int finish = contents.toString().indexOf("〕") + 1;
+
+            reporter = "無記者";
+            if (begin != -1 && finish != -1) {;
+                reporter = contents.substring(begin, finish);
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();
