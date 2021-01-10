@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
      * DATA AND CONSTANTS
      ***********************************************************************/
     protected ImageButton BtnOptSearch, BtnVoiceInput;
-    protected Button BtnPlayHistory;
+    protected ImageButton BtnPlayHistory;
     protected EditText ETKeywords;
     protected TextView TVHistoryDate, TVHistoryContent;
 
