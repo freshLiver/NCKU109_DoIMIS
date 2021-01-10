@@ -38,6 +38,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.*;
+import android.os.StrictMode;
 
 public class MainActivity extends Activity {
 
@@ -59,6 +60,10 @@ public class MainActivity extends Activity {
     private File recordFile;
     private String taiRecString;
 
+    public tw2ch change = new tw2ch();
+    private static final String token = "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9" +
+            ".eyJzY29wZXMiOiIwIiwidmVyIjowLjEsImlhdCI6MTYwMDEzNzMwNSwic2VydmljZV9pZCI6IjEwIiwiZXhwIjoxNjYzMjA5MzA1LCJhdWQiOiJ3bW1rcy5jc2llLmVkdS50dyIsInN1YiI6IiIsImlkIjozNDAsImlzcyI6IkpXVCIsIm5iZiI6MTYwMDEzNzMwNSwidXNlcl9pZCI6IjExOSJ9.WVjd0GjTKpVEflf2rteOfxL495XYpzUelcSI4SIJwBI5sQIvMGh-z7dcclmGRmFrloEe4qzcTs9Q1nFO8fR74ayXkCsreQY9CyuInYvfWAOJCxM0iWwFCGlBYAfFgEIoQDrv-696KVduywafWjQYOaiX4Ggw0AXmoRrU_TcO6ks";
+    public String data ;
 
     /***********************************************************************
      * Constructors/onCreate & get bundle & component settings
@@ -74,6 +79,9 @@ public class MainActivity extends Activity {
         setComponents();
         checkPermission();
         button();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
 
         // init today's history
         try {
@@ -82,6 +90,10 @@ public class MainActivity extends Activity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public String get_array(){
+        return this.historyEvents.get(this.iHistory)[1];
     }
 
     protected void setComponents() {
@@ -154,7 +166,13 @@ public class MainActivity extends Activity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        ETKeywords.setText(taiRecString);
+        //data = token + "@@@" + taiRecString;
+        //String result = change.sendText2("140.116.245.149", 27002, data);
+
+        String data = token + "@@@" + "覓佇遐五四三";
+        String result = change.sendText2("140.116.245.149", 27002, data);
+
+        ETKeywords.setText(result);
     }
 
     public void checkPermission() {
@@ -366,6 +384,7 @@ class MainButtonsMap implements OnClickListener {
     public MainActivity main;
 
 
+
     public MainButtonsMap(MainActivity main) {
         this.main = main;
     }
@@ -407,7 +426,7 @@ class MainButtonsMap implements OnClickListener {
                         taiwaneseSynthesis = new TaiwaneseSynthesis();
                         try {
 
-                            wav_path = taiwaneseSynthesis.execute("台語內容").get();
+                            wav_path = taiwaneseSynthesis.execute(main.get_array()).get();
                             mediaPlayer = new MediaPlayer();
                             mediaPlayer.setDataSource(wav_path);
                             mediaPlayer.prepare();
