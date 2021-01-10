@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
 public class NewsContentDialog extends Dialog implements View.OnClickListener {
 
     /***********************************************************************

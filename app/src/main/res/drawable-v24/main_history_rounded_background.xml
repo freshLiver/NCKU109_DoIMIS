@@ -4,7 +4,7 @@
     <stroke
             android:width="3dp"
             android:color="@color/main_history_border" />
-    <corners android:radius="0dp" />
+    <corners android:radius="5dp" />
 
     <padding
             android:bottom="0dp"

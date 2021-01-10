@@ -25,13 +25,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.concurrent.ExecutionException;
+import java.io.DataInputStream;
+import java.io.OutputStream;
 
-import java.util.ArrayList;
-
+import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -58,6 +63,9 @@ public class MainActivity extends Activity {
     private MediaRecorder mediaRecorder = null;
     private File recordFile;
     private String taiRecString;
+
+    private static final String token = "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9" +
+            ".eyJzY29wZXMiOiIwIiwidmVyIjowLjEsImlhdCI6MTYwMDEzNzMwNSwic2VydmljZV9pZCI6IjEwIiwiZXhwIjoxNjYzMjA5MzA1LCJhdWQiOiJ3bW1rcy5jc2llLmVkdS50dyIsInN1YiI6IiIsImlkIjozNDAsImlzcyI6IkpXVCIsIm5iZiI6MTYwMDEzNzMwNSwidXNlcl9pZCI6IjExOSJ9.WVjd0GjTKpVEflf2rteOfxL495XYpzUelcSI4SIJwBI5sQIvMGh-z7dcclmGRmFrloEe4qzcTs9Q1nFO8fR74ayXkCsreQY9CyuInYvfWAOJCxM0iWwFCGlBYAfFgEIoQDrv-696KVduywafWjQYOaiX4Ggw0AXmoRrU_TcO6ks";
 
 
     /***********************************************************************
@@ -154,7 +162,20 @@ public class MainActivity extends Activity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        ETKeywords.setText(taiRecString);
+        String data = token + "@@@" + taiRecString;
+        try {
+            final String[] chText = new String[1];
+            Thread th2ch = new Thread(() -> {
+                chText[0] = sendText2("140.116.245.149", 27002, data);
+
+            });
+            th2ch.start();
+            th2ch.join();
+            ETKeywords.setText(chText[0]);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void checkPermission() {
@@ -176,6 +197,38 @@ public class MainActivity extends Activity {
     /***********************************************************************
      * CLASS METHODS
      ***********************************************************************/
+
+    protected String sendText2(String host, int port, String text) {
+        String result = null;
+
+        // text pre-process (api websocket format)
+        byte[] data = text.getBytes(StandardCharsets.UTF_8);
+        byte[] size = String.valueOf(data.length).getBytes(StandardCharsets.UTF_8);
+
+        ByteBuffer buf = ByteBuffer.allocate(4 + data.length);
+        buf.putInt(data.length);
+        buf.put(data);
+
+
+        try {
+            Socket api = new Socket(host, port);
+
+            if (api.isConnected()) {
+                OutputStream os = api.getOutputStream();
+                os.write(buf.array());
+                os.flush();
+
+                DataInputStream in = new DataInputStream(api.getInputStream());
+                result = new String(IOUtils.toByteArray(in), StandardCharsets.UTF_8);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
 
     /**
      * 獲取歷史上的今天的事件，放入 historyEvents 後會進行洗牌並選擇 index 0 的事件作為預設事件
@@ -348,6 +401,10 @@ public class MainActivity extends Activity {
      * GETTERS/SETTERS
      ***********************************************************************/
 
+    public String getHistoryContent() {
+        return this.TVHistoryContent.getText().toString();
+    }
+
     /**
      * 取得 EditText 中的文字作為關鍵字
      *
@@ -407,7 +464,7 @@ class MainButtonsMap implements OnClickListener {
                         taiwaneseSynthesis = new TaiwaneseSynthesis();
                         try {
 
-                            wav_path = taiwaneseSynthesis.execute("台語內容").get();
+                            wav_path = taiwaneseSynthesis.execute(main.getHistoryContent()).get();
                             mediaPlayer = new MediaPlayer();
                             mediaPlayer.setDataSource(wav_path);
                             mediaPlayer.prepare();
