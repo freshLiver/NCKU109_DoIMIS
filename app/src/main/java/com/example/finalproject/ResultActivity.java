@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,9 +23,12 @@ public class ResultActivity extends Activity {
     protected String keywords;
     protected ArrayList<String> types, media;
 
-    protected Button BtnResultBackToOpt;
+    protected ImageButton BtnResultBackToOpt;
+
 
     protected Context context;
+
+    protected int fontSizeShift;
 
     /***********************************************************************
      * Constructors/onCreate & get bundle & component settings
@@ -37,6 +41,7 @@ public class ResultActivity extends Activity {
         this.setContentView(R.layout.activity_result);
 
         this.context = this;
+        this.fontSizeShift = 0;
 
         // get bundles and set components
         getBundles();
@@ -57,9 +62,9 @@ public class ResultActivity extends Activity {
     }
 
     protected void setComponents() {
-        // set button listener
         this.BtnResultBackToOpt = this.findViewById(R.id.BtnResultBackToOpt);
 
+        // set buttons listener
         // finish while back clicked
         this.BtnResultBackToOpt.setOnClickListener(v -> finish());
 
@@ -92,6 +97,4 @@ public class ResultActivity extends Activity {
     /***********************************************************************
      * GETTERS/SETTERS
      ***********************************************************************/
-
-
 }

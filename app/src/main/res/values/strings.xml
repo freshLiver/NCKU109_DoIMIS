@@ -4,7 +4,7 @@
     <string name="bundle_kws_main2opt">keywords</string>
 
 
-    <string name="option_media_tag">請點選想看的媒體</string>
+    <string name="option_media_tag">媒體</string>
     <string name="media_name_r0c0">自由時報</string>
     <string name="media_name_r0c1">TVBS新聞網</string>
     <string name="media_name_r1c0">中央社新聞</string>
@@ -12,12 +12,12 @@
     <string name="media_name_r2c0">三立新聞網</string>
     <string name="media_name_r2c1">新頭殼新聞網</string>
 
-    <string name="option_types_tag">請點選新聞類別</string>
-    <string name="types_name_0">國際</string>
-    <string name="types_name_1">社會</string>
-    <string name="types_name_2">政治</string>
-    <string name="types_name_3">財經</string>
-    <string name="types_name_4">體育</string>
+    <string name="option_types_tag">類別</string>
+    <string name="types_name_0">國\n際</string>
+    <string name="types_name_1">社\n會</string>
+    <string name="types_name_2">政\n治</string>
+    <string name="types_name_3">財\n經</string>
+    <string name="types_name_4">體\n育</string>
 
     <string name="option_date_range_tag">請點擊設定日期範圍</string>
     <string name="date_range_after_tag">從：</string>
