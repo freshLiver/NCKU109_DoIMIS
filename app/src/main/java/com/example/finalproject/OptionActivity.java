@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,8 +53,8 @@ public class OptionActivity extends Activity {
     protected void setComponents() {
 
         // ! find all components
-        Button btnBackToMain = findViewById(R.id.BtnBackToMain);
-        Button btnSearch = findViewById(R.id.BtnSearch);
+        ImageButton btnBackToMain = findViewById(R.id.BtnBackToMain);
+        ImageButton btnSearch = findViewById(R.id.BtnSearch);
         Button btnSetRangeStart = findViewById(R.id.BtnSetDateStart);
         Button btnSetRangeEnd = findViewById(R.id.BtnSetDateEnd);
         TVStart = findViewById(R.id.TVOptDateStart);
@@ -72,10 +73,10 @@ public class OptionActivity extends Activity {
     public Pair<Boolean, String> checkLegalSearch() {
 
         // get start and end date
-        if (OptSearchButtonsMap.start == null || OptSearchButtonsMap.end == null)
-            return new Pair<>(false, "請設定開始以及結束日期");
-        String after = this.TVStart.getText().toString();
-        String before = this.TVEnd.getText().toString();
+//        if (OptSearchButtonsMap.start == null || OptSearchButtonsMap.end == null)
+//            return new Pair<>(false, "請設定開始以及結束日期");
+//        String after = this.TVStart.getText().toString();
+//        String before = this.TVEnd.getText().toString();
 
 
         // get wish types
@@ -109,7 +110,7 @@ public class OptionActivity extends Activity {
             return new Pair<>(false, "請至少句選一項媒體");
 
         // everything fine, build query
-        String query = String.format("%s+before:%s+after:%s", getKeywords(), before, after);
+        String query = String.format(" %s", getKeywords());
         return new Pair<>(true, query);
     }
 

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="opt_checkbox_height">100dp</dimen>
+    <dimen name="result_content_font_size">30sp</dimen>
+    <dimen name="result_title_font_size">40sp</dimen>
+    <dimen name="result_info_font_size">20dp</dimen>
+</resources>

@@ -32,30 +32,33 @@
 
             <CheckBox
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/opt_checkbox_height"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/check_box_bg_selector"
+                    android:background="@drawable/check_box_ltn_selector"
                     android:button="@null"
-                    android:gravity="center"
-
-                    android:tag="MEDIA"
                     android:checked="true"
+
+                    android:gravity="center"
+                    android:tag="MEDIA"
                     android:text="@string/media_name_r0c0"
                     android:textAlignment="center"
-                    android:textColor="@drawable/check_box_fg_selector"
+                    android:textColor="@drawable/check_box_media_fg_selector"
                     android:textSize="@dimen/option_media_name" />
 
             <CheckBox
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/opt_checkbox_height"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/check_box_bg_selector"
+                    android:background="@drawable/check_box_tvbs_selector"
                     android:button="@null"
+                    android:checked="true"
                     android:gravity="center"
                     android:tag="MEDIA"
                     android:text="@string/media_name_r0c1"
                     android:textAlignment="center"
-                    android:textColor="@drawable/check_box_fg_selector"
+                    android:textColor="@drawable/check_box_media_fg_selector"
                     android:textSize="@dimen/option_media_name" />
 
         </LinearLayout>
@@ -69,28 +72,32 @@
 
             <CheckBox
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/opt_checkbox_height"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/check_box_bg_selector"
+                    android:background="@drawable/check_box_cna_selector"
                     android:button="@null"
+                    android:checked="true"
                     android:gravity="center"
                     android:tag="MEDIA"
                     android:text="@string/media_name_r1c0"
                     android:textAlignment="center"
-                    android:textColor="@drawable/check_box_fg_selector"
+                    android:textColor="@drawable/check_box_media_fg_selector"
                     android:textSize="@dimen/option_media_name" />
 
             <CheckBox
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/opt_checkbox_height"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/check_box_bg_selector"
+                    android:background="@drawable/check_box_apple_selector"
                     android:button="@null"
+                    android:checked="true"
                     android:gravity="center"
                     android:tag="MEDIA"
                     android:text="@string/media_name_r1c1"
                     android:textAlignment="center"
-                    android:textColor="@drawable/check_box_fg_selector"
+                    android:textColor="@drawable/check_box_media_fg_selector"
                     android:textSize="@dimen/option_media_name" />
         </LinearLayout>
 
@@ -99,15 +106,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="gone"
-                android:tag="MEDIA_PARENT">
+                android:tag="MEDIA_PARENT"
+                android:visibility="gone">
 
             <CheckBox
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/check_box_bg_selector"
+                    android:background="@drawable/check_box_apple_selector"
                     android:button="@null"
+                    android:checked="true"
                     android:gravity="center"
                     android:tag="MEDIA"
                     android:text="@string/media_name_r2c0"
@@ -121,6 +129,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/check_box_bg_selector"
                     android:button="@null"
+
                     android:gravity="center"
                     android:tag="MEDIA"
                     android:text="@string/media_name_r2c1"
@@ -160,6 +169,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/check_box_bg_selector"
                     android:button="@null"
+                    android:checked="true"
+                    android:lines="2"
                     android:tag="TYPES"
                     android:text="@string/types_name_0"
                     android:textAlignment="center"
@@ -172,6 +183,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/check_box_bg_selector"
                     android:button="@null"
+                    android:checked="true"
+                    android:lines="2"
                     android:tag="TYPES"
                     android:text="@string/types_name_1"
                     android:textAlignment="center"
@@ -184,6 +197,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/check_box_bg_selector"
                     android:button="@null"
+                    android:checked="true"
+                    android:lines="2"
                     android:tag="TYPES"
                     android:text="@string/types_name_2"
                     android:textAlignment="center"
@@ -196,6 +211,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/check_box_bg_selector"
                     android:button="@null"
+                    android:checked="true"
+                    android:lines="2"
                     android:tag="TYPES"
                     android:text="@string/types_name_3"
                     android:textAlignment="center"
@@ -208,6 +225,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/check_box_bg_selector"
                     android:button="@null"
+                    android:checked="true"
+                    android:lines="2"
                     android:tag="TYPES"
                     android:text="@string/types_name_4"
                     android:textAlignment="center"
@@ -223,7 +242,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
         <TextView
                 android:layout_width="match_parent"
@@ -317,20 +337,27 @@
             android:layout_weight="1"
 
             android:gravity="center|bottom"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-        <Button
-                android:id="@+id/BtnSearch"
-                android:layout_width="match_parent"
+
+        <ImageButton
+                android:id="@+id/BtnBackToMain"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="搜尋新聞"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:src="@drawable/back"
+                android:text="返回主頁面"
                 android:textSize="20sp" />
 
-        <Button
-                android:id="@+id/BtnBackToMain"
-                android:layout_width="match_parent"
+        <ImageButton
+                android:id="@+id/BtnSearch"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="返回主頁面"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:src="@drawable/next"
+                android:text="搜尋新聞"
                 android:textSize="20sp" />
     </LinearLayout>
 
