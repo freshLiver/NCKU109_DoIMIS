@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
 
     /***********************************************************************
      * DATA AND CONSTANTS
-     ***********************************************************************/
+     *************************************************************z**********/
     protected ImageButton BtnOptSearch, BtnVoiceInput;
     protected ImageButton BtnPlayHistory;
     protected EditText ETKeywords;
@@ -402,8 +402,11 @@ public class MainActivity extends Activity {
      ***********************************************************************/
 
     public String getHistoryContent() {
-        return this.TVHistoryContent.getText().toString();
+        String date = this.TVHistoryDate.getText().toString().split("/")[0];
+        String content = this.TVHistoryContent.getText().toString();
+        return date + "年" + content;
     }
+
 
     /**
      * 取得 EditText 中的文字作為關鍵字
