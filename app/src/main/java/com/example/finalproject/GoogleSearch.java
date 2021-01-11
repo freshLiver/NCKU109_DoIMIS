@@ -1,5 +1,9 @@
 package com.example.finalproject;
 
+import android.gesture.GestureUtils;
+import android.widget.Toast;
+
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -26,6 +30,15 @@ public class GoogleSearch implements Runnable {
     protected boolean skip_flag = false;
 
     protected String keywords;
+
+
+    protected static final String[] TVBSIllegalURLs = {
+            "https://news.tvbs.com.tw/local",
+            "https://news.tvbs.com.tw/world",
+            "https://news.tvbs.com.tw/politics",
+            "https://news.tvbs.com.tw/money",
+            "https://news.tvbs.com.tw/sports"
+    };
 
     /***********************************************************************
      * Constructors
@@ -60,7 +73,7 @@ public class GoogleSearch implements Runnable {
                 this.resActivity.showToast("正在搜尋，請稍候");
 
                 // get target type and media name
-                String type = this.targetTypes.get(iType);
+                String type = this.targetTypes.get(iType).replace("\n", "");
                 String media = this.targetMedia.get(iMedia);
 
                 // do search
@@ -167,61 +180,52 @@ public class GoogleSearch implements Runnable {
         ArrayList<String> text_List = new ArrayList<>();
 
         Document doc_cna = null;
+
+        // TODO search next pages
+
         try {
             doc_cna = Jsoup.connect(targetURL).get();
+        } catch (HttpStatusException ne) {
+            // check if banned
+            this.resActivity.showToast("HttpStatusException (流量異常)");
+            return new ArrayList<>();
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-        String next = "";
-        int times = 0;
-        while (true) {
-            Elements link = doc_cna.select("div.yuRUbf > a");
-            Elements title = doc_cna.select("h3.LC20lb.DKV0Md");
-            Elements text = doc_cna.select("span.aCOpRe");
-            times++;
-            for (Element ele : link) {
-                String url = ele.attr("href");
-                if (!url.equals("https://news.tvbs.com.tw/money") && !url.equals("https://news.tvbs.com.tw/sports")) {
-                    URL_List.add(url);
-                } else {
-                    skip_flag = true;
-                }
-            }
 
-            for (Element ele : title) {
-                String url = ele.text();
-                title_List.add(url);
-            }
-            for (Element ele : text) {
-                String url = ele.text();
-                text_List.add(url);
-            }
-            if (skip_flag) {
-                title_List.remove(0);
-                text_List.remove(0);
-                skip_flag = false;
-            }
+        // if status 200
+        Elements items = doc_cna.getElementsByClass("rc");
 
-            Elements page = doc_cna.select("td.d6cvqb > a");
-            for (Element ele : page) {
-                next = ele.attr("href");
-            }
-            if (link.size() == 10 && times != 3) {
-                next = "https://www.google.com" + next;
-                try {
-                    doc_cna = Jsoup.connect(next).get();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                break;
-            }
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        for (Element item : items) {
+            String title, intro, link;
+
+            // get link
+            Element cls = item.getElementsByClass("yuRUbf").first();
+            Element tag = cls.getElementsByTag("a").first();
+            link = tag.attr("href");
+
+            // check link
+            boolean skip = false;
+            for (String illegal : TVBSIllegalURLs)
+                if (illegal.equals(link))
+                    skip = true;
+
+            if (skip == false) {
+                // get title
+                title = item.getElementsByClass("LC20lb DKV0Md").first().text();
+
+                // get intro
+                intro = item.getElementsByClass("IsZvec").first().text();
+
+
+                // add item
+                URL_List.add(link);
+                title_List.add(title);
+                text_List.add(intro);
             }
         }
+
+
         for (int i = 0; i < URL_List.size(); i++) {
             String[] arr = new String[4];
             arr[0] = title_List.get(i);
