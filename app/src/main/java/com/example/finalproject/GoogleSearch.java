@@ -11,6 +11,8 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
 public class GoogleSearch implements Runnable {
@@ -23,6 +25,7 @@ public class GoogleSearch implements Runnable {
     /***********************************************************************
      * Class & Instance Data
      ***********************************************************************/
+    protected static final String GoogleBaseURL = "https://www.google.com";
     protected static final String GoogleSearchBaseKeyword = "https://www.google.com/search?q=";
     protected ArrayList<String> targetTypes, targetMedia;
     protected ResultActivity resActivity;
@@ -181,10 +184,29 @@ public class GoogleSearch implements Runnable {
 
         Document doc_cna = null;
 
-        // TODO search next pages
+        // push current page
+        Queue<String> nextPages = new LinkedList<>();
+        nextPages.add(targetURL);
 
         try {
             doc_cna = Jsoup.connect(targetURL).get();
+
+            // get visible pages
+            Element pageList = doc_cna.getElementById("foot").getElementsByAttributeValue("jsname", "TeSSVd").first();
+            Elements pageLinks = pageList.getElementsByTag("a");
+
+            // remove "下一頁"
+            pageLinks.remove(pageLinks.last());
+
+            // extract links
+            for (Element pageLink : pageLinks) {
+                String link = GoogleSearch.GoogleBaseURL + pageLink.attr("href");
+
+                // add until max pages
+                if (nextPages.size() < 3)
+                    nextPages.offer(link);
+            }
+
         } catch (HttpStatusException ne) {
             // check if banned
             this.resActivity.showToast("HttpStatusException (流量異常)");
@@ -193,39 +215,52 @@ public class GoogleSearch implements Runnable {
             e1.printStackTrace();
         }
 
-        // if status 200
-        Elements items = doc_cna.getElementsByClass("rc");
+        // try all pages
+        while (nextPages.size() > 0) {
+            String url = nextPages.poll();
 
-        for (Element item : items) {
-            String title, intro, link;
+            try {
+                // crawl this page and get result items
+                Document raw = Jsoup.connect(url).get();
+                Elements items = raw.getElementsByClass("rc");
 
-            // get link
-            Element cls = item.getElementsByClass("yuRUbf").first();
-            Element tag = cls.getElementsByTag("a").first();
-            link = tag.attr("href");
+                for (Element item : items) {
+                    String title, intro, link;
 
-            // check link
-            boolean skip = false;
-            for (String illegal : TVBSIllegalURLs)
-                if (illegal.equals(link))
-                    skip = true;
+                    // get link
+                    Element cls = item.getElementsByClass("yuRUbf").first();
+                    Element tag = cls.getElementsByTag("a").first();
+                    link = tag.attr("href");
 
-            if (skip == false) {
-                // get title
-                title = item.getElementsByClass("LC20lb DKV0Md").first().text();
+                    // check link
+                    boolean skip = false;
+                    for (String illegal : TVBSIllegalURLs)
+                        if (illegal.equals(link))
+                            skip = true;
 
-                // get intro
-                intro = item.getElementsByClass("IsZvec").first().text();
+                    if (skip == false) {
+                        // get title
+                        title = item.getElementsByClass("LC20lb DKV0Md").first().text();
 
+                        // get intro
+                        intro = item.getElementsByClass("IsZvec").first().text();
 
-                // add item
-                URL_List.add(link);
-                title_List.add(title);
-                text_List.add(intro);
+                        // add item
+                        URL_List.add(link);
+                        title_List.add(title);
+                        text_List.add(intro);
+                    }
+                }
+            } catch (HttpStatusException ne) {
+                // check if banned
+                this.resActivity.showToast("HttpStatusException (流量異常)");
+                return new ArrayList<>();
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
         }
 
-
+        // combine all items' info
         for (int i = 0; i < URL_List.size(); i++) {
             String[] arr = new String[4];
             arr[0] = title_List.get(i);
